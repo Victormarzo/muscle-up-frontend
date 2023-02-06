@@ -11,6 +11,7 @@ import SignUp from './components/SignUp';
 import { UserProvider } from './contexts/UserContext';
 import Test from './components/Test';
 import ActiveWorkout from './components/ActiveWorkout';
+import Workout from './components/Workout';
 
 export default function App() {
     return (
@@ -21,6 +22,7 @@ export default function App() {
                         <Route path="/sign-in" element={<SignIn/>} />
                         <Route path="/sign-up" element={<SignUp/>} />
                         <Route path="/test" element={<Test/>} />
+                        <Route path="/workout/:workoutId" element={<Workout/>} />
                         <Route path="/active-workout" element={<ActiveWorkout/>}/>
                     </Routes>
                 </Router>

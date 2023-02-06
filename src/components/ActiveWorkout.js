@@ -5,22 +5,23 @@ import Title from './Workout/Title';
 
 export default function ActiveWorkout() {
     const [workout, setWorkout] = useState([]);
-    const { activeWorkout, getActiveWorkout } = useActiveWorkout();
+    const { activeWorkout } = useActiveWorkout();
     
     useEffect(() => {
-        if(activeWorkout) {
-          console.log(activeWorkout);  
-          setWorkout(activeWorkout);
+        if(activeWorkout) {  
+            setWorkout(activeWorkout);
+            console.log(activeWorkout);
         }
     }, [activeWorkout]);
     
     return(
         <>
             <Title>Treinos</Title>
+            <Title>Escolha seu treino de hoje</Title>
             {workout.length!==0?(workout.map((workout) => 
-                <Active length={workout.Exercise.length} name={workout.name} key={workout.id} ></Active>
+                <Active length={workout.Exercise.length} name={workout.name} key={workout.id} last={workout.updatedAt} id={workout.id}></Active>
             )):(
-              <Title>Treinssssssos</Title>
+                <Title>Você ainda não tem treinos</Title>
             )}
             
         </>

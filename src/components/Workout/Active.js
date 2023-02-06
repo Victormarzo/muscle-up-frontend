@@ -1,12 +1,30 @@
 import dayjs from 'dayjs';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
-export default function Active({ length, name }) {
-    const now = dayjs();
+export default function Active({ length, name, last, id }) {
+    const navigate = useNavigate();
+    function lastDay(last) {
+        const now = dayjs();
+        let lastday;
+        const diff = now.diff(last, 'day');
+        if(diff === 0) {
+            lastday = 'Hoje';
+        }else if (diff === 1 ) {
+            lastday = '1 dia atrás';
+        }else {
+            lastday=`${diff} dias atrás`;
+        }
+        return lastday;
+    }
+
+    const day = lastDay(last);
     return(
-        <ActiveDiv>
+        <ActiveDiv onClick={ () => navigate(`/workout/${id}`)}>
             <h1>{name}</h1>
             <p>{length} exercicios</p>
+            <p>Ultima vez:{day} </p>
         </ActiveDiv>
     );
 };
@@ -16,6 +34,7 @@ const ActiveDiv=styled.div`
     align-items: center;
     width: 85vw;
     border-radius: 10px;
+    margin-top:10px;
     p{
         font-family: 'Raleway';
         font-style: normal;
