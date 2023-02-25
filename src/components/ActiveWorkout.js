@@ -19,7 +19,12 @@ export default function ActiveWorkout() {
             <Title>Treinos</Title>
             <Title>Escolha seu treino de hoje</Title>
             {workout.length!==0?(workout.map((workout) => 
-                <Active length={workout.Exercise.length} name={workout.name} key={workout.id} last={workout.updatedAt} id={workout.id}></Active>
+                <Active 
+                    length={workout.Exercise.length} 
+                    name={workout.name} 
+                    key={workout.id} 
+                    last={workout.Exercise[0].Execution} 
+                    id={workout.id}></Active>
             )):(
                 <Title>Você ainda não tem treinos</Title>
             )}

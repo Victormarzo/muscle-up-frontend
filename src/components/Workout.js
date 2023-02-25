@@ -8,18 +8,13 @@ export default function Workout() {
     const { workoutId } = useParams();
     const [workout, setWorkout] = useState([]);
     const{ workoutById } = useWorkoutById(workoutId);
-    const [renderedRooms, setRenderedRooms] = useState(false);
-    console.log(workoutId);
     useEffect(() => {
         if(workoutById) {
             setWorkout(workoutById);
-            setRenderedRooms(true);
-            console.log(workoutById);
         }
     }, [workoutById]);
     return (
         <>
-            
             {workout.length!==0?(
                 <>
                     <Title>{workout[0].Workout.name}</Title>

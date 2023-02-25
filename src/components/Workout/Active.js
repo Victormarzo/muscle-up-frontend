@@ -5,10 +5,14 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Active({ length, name, last, id }) {
     const navigate = useNavigate();
+    
     function lastDay(last) {
         const now = dayjs();
+        if (last.length===0) {
+            return 'Você ainda não fez esse treino';
+        }
         let lastday;
-        const diff = now.diff(last, 'day');
+        const diff = now.diff(last[0].updatedAt, 'day');
         if(diff === 0) {
             lastday = 'Hoje';
         }else if (diff === 1 ) {
@@ -20,11 +24,12 @@ export default function Active({ length, name, last, id }) {
     }
 
     const day = lastDay(last);
+
     return(
         <ActiveDiv onClick={ () => navigate(`/workout/${id}`)}>
             <h1>{name}</h1>
             <p>{length} exercicios</p>
-            <p>Ultima vez:{day} </p>
+            <p>Última vez: {day} </p>
         </ActiveDiv>
     );
 };
