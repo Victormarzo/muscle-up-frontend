@@ -12,6 +12,8 @@ import { UserProvider } from './contexts/UserContext';
 import Test from './components/Test';
 import ActiveWorkout from './components/ActiveWorkout';
 import Workout from './components/Workout';
+import Execution from './components/Execution';
+import LastExecution from './components/Execution/LastExecution';
 
 export default function App() {
     return (
@@ -24,6 +26,8 @@ export default function App() {
                         <Route path="/test" element={<Test/>} />
                         <Route path="/workout/:workoutId" element={<Workout/>} />
                         <Route path="/active-workout" element={<ActiveWorkout/>}/>
+                        <Route path="/execution/:exerciseId" element={<Execution/>}/>
+                        <Route path="/aa" element={<LastExecution/>}/>
                     </Routes>
                 </Router>
             </UserProvider>

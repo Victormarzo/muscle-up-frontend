@@ -2,7 +2,7 @@ import useAsync from '../useAsync';
 import * as executionApi from '../../services/executionApi';
 import useToken from '../useToken';
 
-export default function useWorkoutById(id) {
+export default function useExecutionById(id) {
     const token = useToken();
     const {
         data: executionById,

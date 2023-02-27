@@ -8,6 +8,7 @@ export default function Workout() {
     const { workoutId } = useParams();
     const [workout, setWorkout] = useState([]);
     const{ workoutById } = useWorkoutById(workoutId);
+    
     useEffect(() => {
         if(workoutById) {
             setWorkout(workoutById);

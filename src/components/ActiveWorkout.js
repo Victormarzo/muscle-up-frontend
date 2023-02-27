@@ -10,7 +10,6 @@ export default function ActiveWorkout() {
     useEffect(() => {
         if(activeWorkout) {  
             setWorkout(activeWorkout);
-            console.log(activeWorkout);
         }
     }, [activeWorkout]);
     
@@ -18,7 +17,7 @@ export default function ActiveWorkout() {
         <>
             <Title>Treinos</Title>
             <Title>Escolha seu treino de hoje</Title>
-            {workout.length!==0?(workout.map((workout) => 
+            {workout.length>0?(workout.map((workout) => 
                 <Active 
                     length={workout.Exercise.length} 
                     name={workout.name} 
