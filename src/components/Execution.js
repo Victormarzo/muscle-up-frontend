@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useExcutionById from '../hooks/api/useExecutionById';
 import LastExecution from './Execution/LastExecution';
 import Title from './Workout/Title';
 import Input from './Form/Input';
+import useNewExecution from '../hooks/api/useNewExecution';
 
 export default function Execution() {
     const { exerciseId } = useParams();
     const [executions, setExecutions] = useState();
     const{ executionById } = useExcutionById(exerciseId);
     const [inputs, setInputs] = useState();
-  
+    const { newExecution }= useNewExecution();
+    const navigate = useNavigate();
+    const [workoutId, setWorkoutId] = useState();
     useEffect(() => {
         console.log('efeito');
         if(executionById) {
@@ -32,7 +35,7 @@ export default function Execution() {
         const allInputs=[];
         const repsNumDouble=2*repsNum;
         let rep;
-        if(executions.Execution!==0) {
+        if(executions.Execution.length!==0) {
             for(let i = 0; i<repsNumDouble; i++) {
                 if(i%2!==0) {
                     rep={ title: `input${i}`, value: '', last: executions.Execution[(i-1)/2].reps };
@@ -50,6 +53,32 @@ export default function Execution() {
             setInputs(allInputs);
         }
     }
+    async function handleSubmit(event) {
+        event.preventDefault();
+        console.log(workoutId);
+        let obj;
+        let executions=[];
+        for (let i =0; i<inputs.length; i++) {
+            if(i%2!==0) {
+                obj={
+                    exerciseId: Number(exerciseId),
+                    reps: Number(inputs[i].value),
+                    weight: Number(inputs[i-1].value)
+                };
+                executions.push(obj);
+            }
+        }
+        const exe={ executions };
+        console.log('aqui estao os inputs', exe);
+        
+        try {
+            await newExecution(exe);
+            console.log('deu');
+            navigate(-1);
+        } catch (error) {
+            console.log('n deu', error);
+        } 
+    }
 
     function handleInputUpdate(ev, index) {
         const newInputs = [...inputs];
@@ -60,11 +89,11 @@ export default function Execution() {
 
     if(executions && !inputs) {
         checkExecution();
-        console.log(2);
+        setWorkoutId(executions.workoutId);
     }
 
     return (
-        <>
+        <ExeForm onSubmit={handleSubmit}>
             {executions?(
                 <>
                     <Title>{executions.name}</Title>
@@ -91,16 +120,18 @@ export default function Execution() {
                                             <Input value={input.value}
                                                 onChange = {(ev) => handleInputUpdate(ev, index)}
                                                 key={index}
+                                                type={'number'}
+                                                required={'required'}
                                             ></Input>
                                             <Input value={inputs[index-1].value}
                                                 onChange = {(ev) => handleInputUpdate(ev, index-1)}
                                                 key={index-1}
+                                                type={'number'}
+                                                required={'required'}
                                             ></Input>
                                         </ExeContainer>
                                     </>
                                 );
-                            }else{
-                                console.log('s');
                             };     
                         })
                     ):(
@@ -111,27 +142,29 @@ export default function Execution() {
                                         <Input value={input.value}
                                             onChange = {(ev) => handleInputUpdate(ev, index)}
                                             key={index}
+                                            type={'number'}
+                                            required
                                         ></Input>
                                         <Input value={inputs[index-1].value}
                                             onChange = {(ev) => handleInputUpdate(ev, index-1)}
                                             key={index-1}
+                                            type={'number'}
+                                            required
                                         ></Input>
                                     </ExeContainer>    
                                 );
-                            }else{
-                                console.log('s');
                             };
                         })
                     )):(<>aaaaaaaaaaaa</>)
                     
                 ):(<>ssssssssss</>)}
             {executions?
-                (<button>APERTA ainda</button>):(<></>)}
-        </>
+                (<button type='submit'>APERTA ainda</button>):(<></>)}
+        </ExeForm>
     );
 };
 
-const ExeContainer=styled.form`
+const ExeContainer=styled.div`
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -157,6 +190,9 @@ const ExeContainer=styled.form`
     background-color: #262A35;
 `;
 
+const ExeForm=styled.form`
+
+`;
 const SubtitleContainer = styled.span`    
     display: flex;
     align-items: center;
