@@ -10,64 +10,128 @@ export default function Execution() {
     const { exerciseId } = useParams();
     const [executions, setExecutions] = useState();
     const{ executionById } = useExcutionById(exerciseId);
-    let inputArray;
+    const [inputs, setInputs] = useState();
+  
     useEffect(() => {
+        console.log('efeito');
         if(executionById) {
             setExecutions(executionById);
             console.log(1);
         }
     }, [executionById]);
     console.log(executions);
+    console.log(inputs);
+
     function checkExecution() {
         const reps=executions.sets.split('x', 1);
-        const formArray=renderForm(reps);
-        return formArray;
+        renderForm(reps);
     }
 
     function renderForm(reps) {
         let repsNum=Number(reps);
-        let arr=[];
-        for(let i =0; i<repsNum; i++) {
-            arr.push(i);
+        const allInputs=[];
+        const repsNumDouble=2*repsNum;
+        let rep;
+        if(executions.Execution!==0) {
+            for(let i = 0; i<repsNumDouble; i++) {
+                if(i%2!==0) {
+                    rep={ title: `input${i}`, value: '', last: executions.Execution[(i-1)/2].reps };
+                }else {
+                    rep={ title: `input${i}`, value: '', last: executions.Execution[i-(i/2)].weight };
+                }
+                allInputs.push(rep);
+            }
+            setInputs(allInputs);
+        }else{
+            for(let i = 0; i<repsNum*2; i++) {
+                rep={ title: `input${i}`, value: '' };
+                allInputs.push(rep);
+            }
+            setInputs(allInputs);
         }
-        console.log(arr);
-        return arr;
     }
 
-    if(executions && executions.Execution.length===0) {
-        inputArray=checkExecution();
+    function handleInputUpdate(ev, index) {
+        const newInputs = [...inputs];
+        const updatedInput = newInputs[index];
+        updatedInput.value = ev.target.value;
+        setInputs(newInputs);
+    }
+
+    if(executions && !inputs) {
+        checkExecution();
+        console.log(2);
     }
 
     return (
         <>
-            {executions?(<Title>{executions.name}</Title>):(<></>)}
+            {executions?(
+                <>
+                    <Title>{executions.name}</Title>
+                    <SubtitleContainer>
+                        <p>Carga</p>
+                        <p>Repetições</p>
+                    </SubtitleContainer>
+                </>
+            ):(<></>)}
+            {executions&&inputs?
+                (
+                    inputs.length!==0?(executions.Execution.length!==0?(
+                        inputs.map((input, index) => {
+                            if(index%2!==0) {
+                                return (
+                                    <>
+                                        <LastExecution
+                                            reps={input.last}
+                                            weight={inputs[index-1].last}
+                                            key={index} 
+                                        >
+                                        </LastExecution>
+                                        <ExeContainer>
+                                            <Input value={input.value}
+                                                onChange = {(ev) => handleInputUpdate(ev, index)}
+                                                key={index}
+                                            ></Input>
+                                            <Input value={inputs[index-1].value}
+                                                onChange = {(ev) => handleInputUpdate(ev, index-1)}
+                                                key={index-1}
+                                            ></Input>
+                                        </ExeContainer>
+                                    </>
+                                );
+                            }else{
+                                console.log('s');
+                            };     
+                        })
+                    ):(
+                        inputs.map((input, index) => {
+                            if(index%2!==0) {
+                                return (
+                                    <ExeContainer>
+                                        <Input value={input.value}
+                                            onChange = {(ev) => handleInputUpdate(ev, index)}
+                                            key={index}
+                                        ></Input>
+                                        <Input value={inputs[index-1].value}
+                                            onChange = {(ev) => handleInputUpdate(ev, index-1)}
+                                            key={index-1}
+                                        ></Input>
+                                    </ExeContainer>    
+                                );
+                            }else{
+                                console.log('s');
+                            };
+                        })
+                    )):(<>aaaaaaaaaaaa</>)
+                    
+                ):(<>ssssssssss</>)}
             {executions?
-                (executions.Execution.length!=0?
-                    executions.Execution.map((exe) => 
-                        <>  
-                            <LastExecution
-                                weight={exe.weight}
-                                reps={exe.reps}
-                            ></LastExecution>
-                            <ExeContainer>
-                                <Input/>
-                                <Input/>
-                            </ExeContainer>
-                        </>
-                    ):
-                    (inputArray.map((x) =>
-                        <ExeContainer>
-                            <Input/>
-                            <Input/>
-                        </ExeContainer>
-                    ))
-                ):
-                (<>ssssssssss</>)}
+                (<button>APERTA ainda</button>):(<></>)}
         </>
     );
 };
 
-const ExeContainer=styled.span`
+const ExeContainer=styled.form`
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -91,4 +155,21 @@ const ExeContainer=styled.span`
         color:white;
     }
     background-color: #262A35;
+`;
+
+const SubtitleContainer = styled.span`    
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 85vw;
+    border-radius: 10px;
+    margin-top:10px;
+    p{
+        font-family: 'Raleway';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 23px;
+        color:white;
+    }
 `;
