@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 export default function Exercise( { id, name, sets, date, read }) {
     const navigate = useNavigate();
     let icon;
+    
     function executedToday(date) {
         if(date.length===0) {
             return <FaDumbbell size='20px' color = 'white' />;

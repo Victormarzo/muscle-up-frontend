@@ -17,3 +17,21 @@ export async function getWorkoutById(token, id) {
     });
     return response.data;
 };
+
+export async function checkWorkoutStatus(token) {
+    const response = await api.get('/workout/check', {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.data;
+}
+
+export async function finishWorkout(token) {
+    const response = await api.get('/workout/finish-workout', {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.data;
+}

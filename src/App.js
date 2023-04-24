@@ -27,7 +27,7 @@ export default function App() {
                         <Route path="/workout/:workoutId" element={<Workout/>} />
                         <Route path="/active-workout" element={<ActiveWorkout/>}/>
                         <Route path="/execution/:exerciseId" element={<Execution/>}/>
-                        <Route path="/aa" element={<LastExecution/>}/>
+                        
                     </Routes>
                 </Router>
             </UserProvider>
