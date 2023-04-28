@@ -5,16 +5,14 @@ import useToken from '../useToken';
 export default function useFinishWorkout() {
     const token = useToken();
     const {
-        data: finishWorkoutData,
         loading: finishWorkoutLoading,
         error: finishWorkoutError,
-        act: finishWorkout
-    } = useAsync(() => workoutApi.finishWorkout(token));
+        act: finishWorkoutC
+    } = useAsync(() => workoutApi.finishWorkout(token), false);
 
     return {
-        finishWorkoutData,
         finishWorkoutLoading,
         finishWorkoutError,
-        finishWorkout
+        finishWorkoutC
     };
 }

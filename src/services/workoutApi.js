@@ -28,7 +28,8 @@ export async function checkWorkoutStatus(token) {
 }
 
 export async function finishWorkout(token) {
-    const response = await api.get('/workout/finish-workout', {
+    const body = {};
+    const response = await api.put('/workout/finish-workout', body, {
         headers: {
             Authorization: `Bearer ${token}`,
         },

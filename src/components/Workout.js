@@ -11,13 +11,14 @@ export default function Workout() {
     const { workoutId } = useParams();
     const [workout, setWorkout] = useState([]);
     const { workoutById } = useWorkoutById(workoutId);
-    const { checkWorkoutStatus } = useCheckWorkout();
-    const { finishWorkout } = useFinishWorkout();
-
+    const { checkWorkout } = useCheckWorkout();
+    const { finishWorkoutC } = useFinishWorkout();
+    
     async function finishThisWorkout() {
-        const status = await checkWorkoutStatus();
+        let status;
+        status = checkWorkout; 
         if (status===true) {
-            await finishWorkout();
+            await finishWorkoutC();
             console.log('acho que deu boa');
         }else {
             console.log('faz nada nao');
