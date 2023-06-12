@@ -15,20 +15,13 @@ export default function Execution() {
     const { newExecution }= useNewExecution();
     const navigate = useNavigate();
     const [workoutId, setWorkoutId] = useState();
+    
     useEffect(() => {
-        console.log('efeito');
         if(executionById) {
             setExecutions(executionById);
             console.log(1);
         }
     }, [executionById]);
-    console.log(executions);
-    console.log(inputs);
-
-    function checkExecution() {
-        const reps=executions.sets.split('x', 1);
-        renderForm(reps);
-    }
 
     function renderForm(reps) {
         let repsNum=Number(reps);
@@ -55,7 +48,6 @@ export default function Execution() {
     }
     async function handleSubmit(event) {
         event.preventDefault();
-        console.log(workoutId);
         let obj;
         let executions=[];
         for (let i =0; i<inputs.length; i++) {
@@ -69,8 +61,6 @@ export default function Execution() {
             }
         }
         const exe={ executions };
-        console.log('aqui estao os inputs', exe);
-        
         try {
             await newExecution(exe);
             console.log('deu');
@@ -85,6 +75,11 @@ export default function Execution() {
         const updatedInput = newInputs[index];
         updatedInput.value = ev.target.value;
         setInputs(newInputs);
+    }
+    
+    function checkExecution() {
+        const reps=executions.sets.split('x', 1);
+        renderForm(reps);
     }
 
     if(executions && !inputs) {

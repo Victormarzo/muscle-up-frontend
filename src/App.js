@@ -14,6 +14,7 @@ import ActiveWorkout from './components/ActiveWorkout';
 import Workout from './components/Workout';
 import Execution from './components/Execution';
 import LastExecution from './components/Execution/LastExecution';
+import Create from './components/Workout/Create';
 
 export default function App() {
     return (
@@ -27,7 +28,7 @@ export default function App() {
                         <Route path="/workout/:workoutId" element={<Workout/>} />
                         <Route path="/active-workout" element={<ActiveWorkout/>}/>
                         <Route path="/execution/:exerciseId" element={<Execution/>}/>
-                        
+                        <Route path="/create" element={<Create/>} />
                     </Routes>
                 </Router>
             </UserProvider>

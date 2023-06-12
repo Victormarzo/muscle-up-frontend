@@ -20,7 +20,7 @@ export default function SignIn() {
             console.log(userData);
             setUserData(userData);
             alert('Login realizado com sucesso!');
-            navigate('/test');
+            navigate('/active-workout');
         } catch (err) {
             alert('Não foi possível fazer o login!');
         }

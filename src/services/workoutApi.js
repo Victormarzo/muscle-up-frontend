@@ -36,3 +36,12 @@ export async function finishWorkout(token) {
     });
     return response.data;
 }
+
+export async function createWorkout(token, body) {
+    const response = await api.post('/workout', body, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    }); 
+    return response.data; 
+}
