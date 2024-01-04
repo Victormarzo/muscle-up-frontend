@@ -2,11 +2,12 @@ import styled from 'styled-components';
 import Input from '../Form/Input';
 import Title from '../Workout/Title';
 
-export default function LastExecution({ weight, reps }) {
+export default function LastExecution({ weight, reps, last }) {
     return (
         <>
             <Execution>
                 <p>{weight}kg</p>
+                <p>{last}</p>
                 <p>{reps}</p>
             </Execution>
         </>

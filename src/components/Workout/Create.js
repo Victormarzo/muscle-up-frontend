@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Input from '../Form/Input';
 import { useNavigate } from 'react-router-dom';
 import useNewWorkout from '../../hooks/api/useNewWorkout';
+import buttonSet from '../Form/Buttons';
+import Title from './Title';
 export default function Create() {
     const [exInputs, setExInputs] = useState([
         { exercise: '', sets: '', reps: '' }
@@ -23,7 +25,7 @@ export default function Create() {
         try {
             await newWorkout(obj);
             console.log('deu');
-            // navigate(-1);
+            navigate('/');
         } catch (error) {
             console.log('n deu', error);
         } 
@@ -53,58 +55,76 @@ export default function Create() {
         temp.splice(index, 1);
         setExInputs(temp);
     }
+
+    function redirect() {
+        navigate('/toggle');
+    }
     return (
         <>
-            <h1>NOVO TREINO</h1>
-            <form>
-                <Input 
+            <Title>NOVO TREINO</Title>
+            <Form>
+                <NInput 
                     type='text'
                     value={exName} 
                     onChange={e => setExName(e.target.value)} 
                     placeholder = 'Nome do treino'
-                ></Input>
+                ></NInput>
                 {exInputs.length!==0?
                     (exInputs.map((input, index) => 
-                        <div key={index}>
-                            <Input type = 'text'
-                                name='exercise'
-                                required
-                                placeholder = 'Exercicio'
-                                value ={input.exercise}
-                                onChange={event => handleInputUpdate(event, index)}
-                            ></Input>
-                            <button 
+                        <Container>
+                            <div key={index}>
+                                <Input type = 'text'
+                                    name='exercise'
+                                    required
+                                    placeholder = 'Exercicio'
+                                    value ={input.exercise}
+                                    onChange={event => handleInputUpdate(event, index)}
+                                ></Input>
+                            
+                                <NewEx>
+                                    <SInput type = 'number'
+                                        name='sets'
+                                        required
+                                        placeholder = 'Series'
+                                        value ={input.sets}
+                                        onChange={event => handleInputUpdate(event, index)}
+                                    ></SInput>
+                                    <X>X</X>
+                                    <SInput type = 'number'
+                                        name ='reps'
+                                        required
+                                        placeholder = 'Reps'
+                                        value ={input.reps}
+                                        onChange={event => handleInputUpdate(event, index)}
+                                    ></SInput>
+                                </NewEx>
+                            </div>
+                            <buttonSet.RemoveButton 
+                                size='25px'
                                 type= 'button'
                                 onClick={() => removeInput(index)}
-                            >remove</button>
-                            <NewEx>
-                                <SInput type = 'number'
-                                    name='sets'
-                                    required
-                                    placeholder = 'Series'
-                                    value ={input.sets}
-                                    onChange={event => handleInputUpdate(event, index)}
-                                ></SInput>
-                                <X>X</X>
-                                <SInput type = 'number'
-                                    name ='reps'
-                                    required
-                                    placeholder = 'Repeticoes'
-                                    value ={input.reps}
-                                    onChange={event => handleInputUpdate(event, index)}
-                                ></SInput>
-                            </NewEx>
-                        </div>
-                    )):(<>aaaaaaaaa</>)}
-                <button 
-                    type= 'button'
-                    onClick={addInput}
-                >add</button>
-                <button 
-                    type='submit'
-                    onClick={handleSubmit}
-                >send</button>
-            </form>
+                            >remove</buttonSet.RemoveButton>
+                        </Container>
+                        
+                    )):(<></>)}
+                <ButtonContainer>
+                    <buttonSet.BackButton 
+                        size='50px'
+                        onClick={redirect}>
+                    </buttonSet.BackButton>
+                    <buttonSet.AddButton
+                        size='50px'
+                        type= 'button'
+                        onClick={addInput}>
+                    </buttonSet.AddButton>
+                    <buttonSet.ConfirmButton 
+                        size='50px'
+                        type='submit'
+                        onClick={handleSubmit}>
+                    </buttonSet.ConfirmButton>
+                    
+                </ButtonContainer>
+            </Form>
         </>
         
     );
@@ -119,6 +139,25 @@ const NewEx = styled.div`
 const SInput = styled(Input)`
     width: 100px;
 `;
+const Form=styled.form`
+    display: flex;
+    flex-direction: column;
+
+`;
+const NInput= styled(Input)`
+width: 351px;
+`;
 const X = styled.p`
     color: white;
+`;
+const Container=styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: space-around;
+    margin-top:10%;
 `;

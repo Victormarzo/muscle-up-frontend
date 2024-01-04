@@ -5,6 +5,8 @@ import Button from './Form/Button';
 import Input from './Form/Input';
 import UserContext from '../contexts/UserContext';
 import styled from 'styled-components';
+import Logo from './Logo';
+import Title from './Workout/Title';
 
 export default function SignIn() {
     const [email, setEmail] = useState('');
@@ -25,11 +27,22 @@ export default function SignIn() {
             alert('Não foi possível fazer o cadastro!');
         }
     } 
+
+    function redirect() {
+        navigate('/sign-in');
+    }
+
     return (
         <>
+            <Logo></Logo>
+            <Title>Login</Title>
+            <Redirect onClick={redirect}>Já possui conta? Faça login aqui</Redirect>
             <Form onSubmit={submit}>
+                <Text>EMAIL</Text>
                 <Input label="E-mail" placeholder = 'email' type="text" value={email} onChange={e => setEmail(e.target.value)} ></Input>
+                <Text>SENHA</Text>
                 <Input label="Senha" placeholder = 'password'type="password" value={password} onChange={e => setPassword(e.target.value)}></Input>
+                <Text>NOME</Text>
                 <Input label="name" placeholder = 'name' type="text" value={name} onChange={e => setName(e.target.value)}></Input>
                 <Button type="submit">Cadastrar</Button>
             </Form>
@@ -40,4 +53,15 @@ export default function SignIn() {
 const Form = styled.form`
     display: flex;
     flex-direction: column;
+`;
+const Text = styled.p`
+    color: white;
+    font-family: 'Anton', sans-serif;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    
+`;
+const Redirect = styled(Text)`
+    text-decoration: underline;
+    text-align: center;
 `;

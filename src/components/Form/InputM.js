@@ -1,16 +1,16 @@
 import styled from 'styled-components';
 
-export default function Input({ onChange = () => 0, ...props }) {
+export default function InputM({ onChange = () => 0, ...props }) {
     return (
         <InputBox { ...props } onChange={ onChange } />
     );
 };
 
 const InputBox = styled.input`
-    width: 326px;
-    height: 58px;
+    width: 100px;
+    height: 45px;
     background: #A1C6CB;
-    border-radius: 25px;
+    border-radius: 15px;
     border:0;
     font-family: 'Raleway';
     font-style: normal;
@@ -18,6 +18,6 @@ const InputBox = styled.input`
     font-size: 20px;
     line-height: 23px;    
     color: #000000;
-    margin-bottom: 13px;        
-    padding:13px;
+    margin-bottom: 13px; 
+    padding-left:2% ;
 `;

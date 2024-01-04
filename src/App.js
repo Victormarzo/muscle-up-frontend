@@ -14,8 +14,10 @@ import ActiveWorkout from './components/ActiveWorkout';
 import Workout from './components/Workout';
 import Execution from './components/Execution';
 import LastExecution from './components/Execution/LastExecution';
+import WorkoutDisplay from './components/Workout/WorkoutDisplay';
 import Create from './components/Workout/Create';
-
+import Toggle from './components/Workout/Toggle';
+import Home from './components/Home';
 export default function App() {
     return (
         <>
@@ -25,10 +27,14 @@ export default function App() {
                         <Route path="/sign-in" element={<SignIn/>} />
                         <Route path="/sign-up" element={<SignUp/>} />
                         <Route path="/test" element={<Test/>} />
+                        <Route path="/" element={<Home/>} />
                         <Route path="/workout/:workoutId" element={<Workout/>} />
+                        <Route path="/workout-display/:workoutId" element={<WorkoutDisplay/>} />
                         <Route path="/active-workout" element={<ActiveWorkout/>}/>
                         <Route path="/execution/:exerciseId" element={<Execution/>}/>
                         <Route path="/create" element={<Create/>} />
+                        <Route path="/toggle" element={<Toggle/>} />
+
                     </Routes>
                 </Router>
             </UserProvider>

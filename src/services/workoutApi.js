@@ -45,3 +45,21 @@ export async function createWorkout(token, body) {
     }); 
     return response.data; 
 }
+
+export async function getAllWorkout(token) {
+    const response = await api.get('/workout', {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.data;
+};
+
+export async function putToogleWorkout({ token, id }) {
+    const response = await api.get(`/workout/toggle/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.data;
+}

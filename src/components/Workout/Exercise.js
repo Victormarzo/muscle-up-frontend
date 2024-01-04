@@ -28,12 +28,11 @@ export default function Exercise( { id, name, sets, date, read }) {
     };
 
     return(
-        <>
+        <Container>
             <ExerciseDiv onClick={ () => navigate(`/execution/${id}`)}>
                 {name}{icon}
             </ExerciseDiv>
-            <P>{sets}</P> 
-        </>
+        </Container>
     );
 };
 const ExerciseDiv=styled.div`
@@ -41,7 +40,6 @@ const ExerciseDiv=styled.div`
     justify-content: space-between;
     width: 85vw;
     border-radius: 10px;
-    margin-top:10px;
     font-family: 'Raleway';
     font-style: normal;
     font-weight: 400;
@@ -54,6 +52,15 @@ const P=styled.p`
     font-style: normal;
     font-weight: 400;
     font-size: 16px;
-    line-height: 23px;
     color:white;
+`;
+const Container = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background-color:#A1C6CB;
+    padding: 10px;
+    margin-bottom: 7%;
+
 `;

@@ -9,6 +9,9 @@ import {
     FaPlusCircle,
     FaArrowCircleLeft
 }from 'react-icons/fa';
+
+import buttonSet from './Form/Buttons';
+
 export default function Test() {
     const { userData } = useContext(UserContext);
     const navigate = useNavigate(); 
@@ -24,10 +27,11 @@ export default function Test() {
 
     return (
         <>
-            <LastWorkout name={obj.name} date={obj.updatedAt}/>
-            <FaOutdent size='40px' color = 'white' />
+            <buttonSet.AddButton></buttonSet.AddButton>
             <FaDumbbell size='40px' color = 'white' onClick={navigate('/active-workout')} />
             
         </>
     );
 };
+
+//senha:1223456789

@@ -6,10 +6,14 @@ export default function Title({ children }) {
     );
 };
 const TitleH1 = styled.h1`
-    font-family: 'Raleway';
+    font-family: 'Poppins';
     font-style: normal;
     font-weight: 700;
-    font-size: 26px;
+    font-size: 32px;
     line-height: 31px;
     color: #FFFFFF;
+    margin: auto;
+    text-align:center;
+    margin-top: 10%;
+    margin-bottom: 10%;
 `;

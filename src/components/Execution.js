@@ -4,8 +4,11 @@ import styled from 'styled-components';
 import useExcutionById from '../hooks/api/useExecutionById';
 import LastExecution from './Execution/LastExecution';
 import Title from './Workout/Title';
-import Input from './Form/Input';
+import InputM from './Form/InputM';
+import InputP from './Form/InputP';
 import useNewExecution from '../hooks/api/useNewExecution';
+import dayjs from 'dayjs';
+import Button from './Form/Button';
 
 export default function Execution() {
     const { exerciseId } = useParams();
@@ -15,11 +18,10 @@ export default function Execution() {
     const { newExecution }= useNewExecution();
     const navigate = useNavigate();
     const [workoutId, setWorkoutId] = useState();
-    
+    const [lastE, setLastE] = useState();
     useEffect(() => {
         if(executionById) {
             setExecutions(executionById);
-            console.log(1);
         }
     }, [executionById]);
 
@@ -35,6 +37,7 @@ export default function Execution() {
                 }else {
                     rep={ title: `input${i}`, value: '', last: executions.Execution[i-(i/2)].weight };
                 }
+                setLastE(dayjs(executions.Execution[0].createdAt).format('DD/MM/YYYY'));
                 allInputs.push(rep);
             }
             setInputs(allInputs);
@@ -86,15 +89,16 @@ export default function Execution() {
         checkExecution();
         setWorkoutId(executions.workoutId);
     }
-
+    
     return (
         <ExeForm onSubmit={handleSubmit}>
             {executions?(
                 <>
+                    
                     <Title>{executions.name}</Title>
                     <SubtitleContainer>
-                        <p>Carga</p>
-                        <p>Repetições</p>
+                        <SpamW><p>Carga</p></SpamW>
+                        <SpamR><p>Repetições</p></SpamR>
                     </SubtitleContainer>
                 </>
             ):(<></>)}
@@ -109,21 +113,22 @@ export default function Execution() {
                                             reps={input.last}
                                             weight={inputs[index-1].last}
                                             key={index} 
+                                            last={lastE}
                                         >
                                         </LastExecution>
                                         <ExeContainer>
-                                            <Input value={input.value}
+                                            <InputM value={input.value}
                                                 onChange = {(ev) => handleInputUpdate(ev, index)}
                                                 key={index}
                                                 type={'number'}
                                                 required={'required'}
-                                            ></Input>
-                                            <Input value={inputs[index-1].value}
+                                            ></InputM>
+                                            <InputP value={inputs[index-1].value}
                                                 onChange = {(ev) => handleInputUpdate(ev, index-1)}
                                                 key={index-1}
                                                 type={'number'}
                                                 required={'required'}
-                                            ></Input>
+                                            ></InputP>
                                         </ExeContainer>
                                     </>
                                 );
@@ -134,18 +139,18 @@ export default function Execution() {
                             if(index%2!==0) {
                                 return (
                                     <ExeContainer>
-                                        <Input value={input.value}
+                                        <InputM value={input.value}
                                             onChange = {(ev) => handleInputUpdate(ev, index)}
                                             key={index}
                                             type={'number'}
                                             required
-                                        ></Input>
-                                        <Input value={inputs[index-1].value}
+                                        ></InputM>
+                                        <InputP value={inputs[index-1].value}
                                             onChange = {(ev) => handleInputUpdate(ev, index-1)}
                                             key={index-1}
                                             type={'number'}
                                             required
-                                        ></Input>
+                                        ></InputP>
                                     </ExeContainer>    
                                 );
                             };
@@ -154,7 +159,11 @@ export default function Execution() {
                     
                 ):(<>ssssssssss</>)}
             {executions?
-                (<button type='submit'>APERTA ainda</button>):(<></>)}
+                (
+                    <Center>
+                        <Button type='submit'>Finalizar</Button>
+                    </Center>
+                ):(<></>)}
         </ExeForm>
     );
 };
@@ -182,7 +191,7 @@ const ExeContainer=styled.div`
         line-height: 23px;
         color:white;
     }
-    background-color: #262A35;
+    
 `;
 
 const ExeForm=styled.form`
@@ -203,4 +212,19 @@ const SubtitleContainer = styled.span`
         line-height: 23px;
         color:white;
     }
+`;
+const SpamR = styled.span`
+    width: 70px;
+    margin-left: -52px;
+`;
+
+const SpamW = styled.span`
+    width: 100px;
+    margin-left: 12px;
+`;
+const Center=styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10%;
 `;

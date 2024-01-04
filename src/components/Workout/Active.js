@@ -2,7 +2,8 @@ import dayjs from 'dayjs';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-
+import SubTitle from './Subtitle';
+import Ptext from './Ptext';
 export default function Active({ length, name, last, id }) {
     const navigate = useNavigate();
     
@@ -27,9 +28,10 @@ export default function Active({ length, name, last, id }) {
 
     return(
         <ActiveDiv onClick={ () => navigate(`/workout/${id}`)}>
-            <h1>{name}</h1>
-            <p>{length} exercicios</p>
-            <p>Última vez: {day} </p>
+            <SubTitle>{name}</SubTitle>
+            <Ptext>{length} exercicios</Ptext>
+            <Ptext>ÚLTIMA VEZ:</Ptext>
+            <Ptext>{day}</Ptext>
         </ActiveDiv>
     );
 };
@@ -39,22 +41,9 @@ const ActiveDiv=styled.div`
     align-items: center;
     width: 85vw;
     border-radius: 10px;
-    margin-top:10px;
-    p{
-        font-family: 'Raleway';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 20px;
-        line-height: 23px;
-        color:white;
-    }
-    h1{
-        font-family: 'Raleway';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 28px;
-        line-height: 23px;
-        color:white;
-    }
-    background-color: #262A35;
+    margin-top:10%;
+    padding: 5%;
+    border: 30px white ;   
+    background-color: #DDF8EF;
 `;
+
