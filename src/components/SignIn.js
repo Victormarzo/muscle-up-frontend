@@ -20,7 +20,6 @@ export default function SignIn() {
         try {
             console.log(password);
             const userData = await signIn(email, password);
-            console.log(userData);
             setUserData(userData);
             alert('Login realizado com sucesso!');
             navigate('/active-workout');

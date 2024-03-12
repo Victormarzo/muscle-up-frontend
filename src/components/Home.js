@@ -1,19 +1,153 @@
 import UserContext from '../contexts/UserContext';
+import useWorkoutCheck from '../hooks/api/useWorkoutCheck';
 import buttonSet from './Form/Buttons';
-import { useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import Title from './Workout/Title';
+import styled from 'styled-components';
+import useGetLastWorkout from '../hooks/api/useGetLastWorkout';
+import { useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
+
 export default function Home() {
-    const{ userData } = useContext(UserContext);
-    // pegar usuario a partir do id, verificar se tem ativo ou nao
+    const [current, setCurrent]=useState();
+    const [last, setLast] = useState();
+    const { workoutCheck, workoutCheckError } = useWorkoutCheck();
+    const { userData } = useContext(UserContext); 
+    const { lastWorkout } = useGetLastWorkout();
+    const navigate = useNavigate();
+    const userName = userData.name;
+
+    useEffect(() => {
+        if(workoutCheck) { 
+            setCurrent(workoutCheck.id);
+        }
+        if(workoutCheckError) {
+            if(workoutCheckError.response.data === 'Not Found') {
+                setCurrent(false);
+            }
+        }
+    }, [workoutCheck, workoutCheckError]);
+    
+    useEffect(() => {
+        if(lastWorkout) {
+            setLast(lastWorkout);
+        }
+    }, [lastWorkout]);
+    
+    function redirect(option) {
+        if(option ===1) {
+            navigate(`/workout/${current}`);
+        }else if( option===2) {
+            navigate('/active-workout');
+        }else if(option===3) {
+            navigate('/toggle');
+        }
+    }
+    function dataParse(date) {
+        return dayjs(date).format('DD/MM/YYYY');
+    } 
+
+    const currentNotification = 
+        <CurrentContainer >
+            <NotificationP>Você possui um treino em andamento</NotificationP>
+            <NotificationS onClick={() => redirect(1) } >Ir para treino</NotificationS>        
+        </CurrentContainer >;
     
     return(
         <>
-            <buttonSet.AddButton></buttonSet.AddButton>
-            <buttonSet.BackButton></buttonSet.BackButton>
-            <buttonSet.ConfigButton></buttonSet.ConfigButton>
-            <buttonSet.ConfirmButton></buttonSet.ConfirmButton>
-            <buttonSet.RemoveButton></buttonSet.RemoveButton>
-            <buttonSet.WorkoutButton></buttonSet.WorkoutButton>
+            
+            <Container>
+                <Title>Olá, {userName}</Title>
+                {last?(<Last>
+                    <Title>Ultimo treino:</Title>
+                    <LastWorkout>{last.name}</LastWorkout>
+                    <p>{dataParse(last.updatedAt)}</p>
+                </Last>):
+                    (<SpaceDiv>
+                    </SpaceDiv>)}
+                <ButtonContainer>
+                    <buttonSet.ConfigButton onClick={() => redirect(3)} size='60px'></buttonSet.ConfigButton>            
+                    <buttonSet.WorkoutButton onClick={() => redirect(2)} size='60px'></buttonSet.WorkoutButton>
+                </ButtonContainer>
+                {current?(currentNotification):(<></>)}
+            </Container>
         </>
         
     );
 }
+
+const CurrentContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 15%;
+    border: solid 2px white;
+    border-radius: 25px;
+    padding: 10px;
+`;
+
+const ButtonContainer =styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 75vw;
+    margin-top:20%;
+`;
+
+const NotificationP = styled.p`
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 22px;
+    color:white;
+`;
+
+const NotificationS = styled.p`
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 22px;
+    color:white;
+    text-decoration: underline;
+`;
+
+const Container=styled.div`
+    margin-top:20%;        
+`;
+
+const Last=styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    p{
+        font-family: 'Raleway';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 32px;
+        color:white; 
+    }
+`;
+
+const LastWorkout = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: solid 1px white;
+    border-radius: 25px;
+    background: #A1C6CB;
+    width: 326px;
+    height: 58px;
+    font-family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    color:black; 
+    margin-bottom: 7%;
+`;
+
+const SpaceDiv= styled.div`
+    height:218px
+`;

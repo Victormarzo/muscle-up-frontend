@@ -138,6 +138,7 @@ const NewEx = styled.div`
 
 const SInput = styled(Input)`
     width: 100px;
+    margin-bottom: 0px;
 `;
 const Form=styled.form`
     display: flex;
@@ -145,7 +146,8 @@ const Form=styled.form`
 
 `;
 const NInput= styled(Input)`
-width: 351px;
+    width: 351px;
+    margin-bottom:150px;
 `;
 const X = styled.p`
     color: white;
@@ -154,10 +156,12 @@ const Container=styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom:10%;
 `;
 
 const ButtonContainer = styled.div`
     display: flex;
     justify-content: space-around;
     margin-top:10%;
+    
 `;

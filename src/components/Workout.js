@@ -8,6 +8,7 @@ import useCheckWorkout from '../hooks/api/useCheckWorkout';
 import useFinishWorkout from '../hooks/api/useFinishWorkout';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import buttonSet from './Form/Buttons';
 
 export default function Workout() {
     const { workoutId } = useParams();
@@ -33,6 +34,10 @@ export default function Workout() {
             setWorkout(workoutById);
         }
     }, [workoutById]);
+
+    function redirect() {
+        navigate(-1);
+    }
     return (
         <>
             {workout.length!==0?(
@@ -52,7 +57,9 @@ export default function Workout() {
                     <CenterContainer>
                         <Button onClick={finishThisWorkout}>Finalizar treino</Button>
                     </CenterContainer>
-                    
+                    <ButtonContainer>
+                        <buttonSet.BackButton size={'60px'} onClick={redirect}></buttonSet.BackButton>
+                    </ButtonContainer>
                 </Container>
             ):(<></>)}
         </>
@@ -69,5 +76,10 @@ const CenterContainer=styled.div`
 const Container = styled.div`
     display: flex;
     flex-direction: column;
+    margin-top:10%;
+`;
+const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: space-around;
     margin-top:10%;
 `;

@@ -20,7 +20,7 @@ export default function ActiveWorkout() {
     function redirect() {
         navigate('/');
     }
-
+    
     return(
         <Container>
             

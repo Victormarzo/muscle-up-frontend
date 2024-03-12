@@ -9,6 +9,7 @@ import InputP from './Form/InputP';
 import useNewExecution from '../hooks/api/useNewExecution';
 import dayjs from 'dayjs';
 import Button from './Form/Button';
+import buttonSet from './Form/Buttons';
 
 export default function Execution() {
     const { exerciseId } = useParams();
@@ -89,7 +90,9 @@ export default function Execution() {
         checkExecution();
         setWorkoutId(executions.workoutId);
     }
-    
+    function redirect() {
+        navigate(-1);
+    }
     return (
         <ExeForm onSubmit={handleSubmit}>
             {executions?(
@@ -160,9 +163,15 @@ export default function Execution() {
                 ):(<>ssssssssss</>)}
             {executions?
                 (
-                    <Center>
-                        <Button type='submit'>Finalizar</Button>
-                    </Center>
+                    <>
+                        <Center>
+                            <Button type='submit'>Finalizar</Button>
+                        </Center>
+                        <ButtonContainer>
+                            <buttonSet.BackButton size={'60px'} onClick={redirect}></buttonSet.BackButton>
+                        </ButtonContainer>
+                        
+                    </>
                 ):(<></>)}
         </ExeForm>
     );
@@ -227,4 +236,10 @@ const Center=styled.div`
     align-items: center;
     justify-content: center;
     margin-top: 10%;
+`;
+const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: space-around;
+    margin-top:10%;
+    padding-bottom:10%;
 `;

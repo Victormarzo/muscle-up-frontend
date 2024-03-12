@@ -63,3 +63,23 @@ export async function putToogleWorkout({ token, id }) {
     });
     return response.data;
 }
+
+export async function workoutCheckA(token) {
+    const response = await api.get('/workout/current', {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    
+    return response.data;
+}
+
+export async function getLastWorkout(token) {
+    const response = await api.get('/workout/current', {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    
+    return response.data;
+}
