@@ -9,31 +9,30 @@ import useToken from './hooks/useToken';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import { UserProvider } from './contexts/UserContext';
-import Test from './components/Test';
 import ActiveWorkout from './components/ActiveWorkout';
 import Workout from './components/Workout';
 import Execution from './components/Execution';
-import LastExecution from './components/Execution/LastExecution';
 import WorkoutDisplay from './components/Workout/WorkoutDisplay';
 import Create from './components/Workout/Create';
 import Toggle from './components/Workout/Toggle';
 import Home from './components/Home';
+import GlobalStyle from './assets/styles/globalStyles';
 export default function App() {
     return (
         <>
             <UserProvider>
+                <GlobalStyle/>
                 <Router>
                     <Routes>
                         <Route path="/sign-in" element={<SignIn/>} />
                         <Route path="/sign-up" element={<SignUp/>} />
-                        <Route path="/test" element={<Test/>} />
-                        <Route path="/" element={<Home/>} />
-                        <Route path="/workout/:workoutId" element={<Workout/>} />
-                        <Route path="/workout-display/:workoutId" element={<WorkoutDisplay/>} />
-                        <Route path="/active-workout" element={<ActiveWorkout/>}/>
-                        <Route path="/execution/:exerciseId" element={<Execution/>}/>
-                        <Route path="/create" element={<Create/>} />
-                        <Route path="/toggle" element={<Toggle/>} />
+                        <Route path="/" element={<ProtectedRouteGuard><Home/></ProtectedRouteGuard>} />
+                        <Route path="/workout/:workoutId" element={<ProtectedRouteGuard><Workout/></ProtectedRouteGuard>} />
+                        <Route path="/workout-display/:workoutId" element={<ProtectedRouteGuard><WorkoutDisplay/></ProtectedRouteGuard>} />
+                        <Route path="/active-workout" element={<ProtectedRouteGuard><ActiveWorkout/></ProtectedRouteGuard>}/>
+                        <Route path="/execution/:exerciseId" element={<ProtectedRouteGuard><Execution/></ProtectedRouteGuard>}/>
+                        <Route path="/create" element={<ProtectedRouteGuard><Create/></ProtectedRouteGuard>} />
+                        <Route path="/toggle" element={<ProtectedRouteGuard><Toggle/></ProtectedRouteGuard>} />
 
                     </Routes>
                 </Router>

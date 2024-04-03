@@ -19,5 +19,6 @@ const InputBox = styled.input`
     line-height: 23px;    
     color: #000000;
     margin-bottom: 13px;  
-    padding-left:2% ;      
+    padding-left:2% ;  
+    text-align: center;     
 `;

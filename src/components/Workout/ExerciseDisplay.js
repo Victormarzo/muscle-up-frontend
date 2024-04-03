@@ -1,34 +1,36 @@
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 
 export default function ExerciseDisplay( { name, sets }) {
     return(
         <>
             <ExerciseDiv>
-                {name}
+                <Container>{name}
+                </Container>
+                <Container> {sets}
+                </Container>
+               
             </ExerciseDiv>
-            <P>{sets}</P> 
+            
         </>
     );
 };
 const ExerciseDiv=styled.div`
     display: flex;
-    justify-content: space-between;
+    justify-content:space-between;
+    align-items:center;
+    min-height:58px;
     width: 85vw;
     border-radius: 10px;
-    margin-top:10px;
+    margin-top:10%;
     font-family: 'Raleway';
     font-style: normal;
     font-weight: 400;
-    font-size: 20px;
+    font-size: 25px;
     line-height: 23px;
     color:white;
+    background:#476C7C;
+    padding: 0 5% 0 5%;
 `;
-const P=styled.p`
-    font-family: 'Raleway';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 23px;
-    color:white;
+const Container=styled.div`
+
 `;

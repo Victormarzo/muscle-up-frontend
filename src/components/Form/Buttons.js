@@ -1,8 +1,6 @@
 import {
     FaDumbbell,
-    FaOutdent,
     FaCheckCircle,
-    FaMinusCircle,
     FaPlusCircle,
     FaArrowCircleLeft,
     FaCog,
@@ -11,37 +9,37 @@ import {
 
 export function AddButton({ ...props }) {
     return (
-        <FaPlusCircle { ...props } color = '#DDF8EF' />
+        <FaPlusCircle { ...props } color = '#90FBFF' />
     );
 };
 
 export function RemoveButton({ ...props }) {
     return(
-        <FaTimesCircle { ...props } color = '#DDF8EF' />
+        <FaTimesCircle { ...props } color = '#90FBFF' />
     );
 };
 
 export function BackButton({ ...props }) {
     return(
-        <FaArrowCircleLeft {...props }  color = '#DDF8EF' />
+        <FaArrowCircleLeft {...props }  color = '#90FBFF' />
     );
 };
 
 export function ConfigButton({ ...props }) {
     return(
-        <FaCog { ...props } color = '#DDF8EF' />
+        <FaCog { ...props } color = '#90FBFF' />
     );
 };
 
 export function WorkoutButton({ ...props }) {
     return(
-        <FaDumbbell { ...props } color = '#DDF8EF' />
+        <FaDumbbell { ...props } color = '#90FBFF' />
     );
 }
 
 export function ConfirmButton({ ...props }) {
     return(
-        <FaCheckCircle { ...props } color = '#DDF8EF' />
+        <FaCheckCircle { ...props } color = '#90FBFF' />
     );
 }
 

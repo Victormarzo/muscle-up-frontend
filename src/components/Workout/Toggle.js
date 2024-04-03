@@ -30,7 +30,8 @@ export default function Toggle() {
     }
 
     return(
-        <>
+        <Container>
+           
             <Title>Todos os treinos</Title>
             {workouts.length>0?(workouts.map((workout) => 
                 <AllWorkout 
@@ -39,7 +40,8 @@ export default function Toggle() {
                     name={workout.name} 
                     key={workout.id} 
                     active={workout.isActive} 
-                    id={workout.id}></AllWorkout>
+                    id={workout.id}>    
+                </AllWorkout>
             )):(
                 <Title>Você ainda não tem treinos</Title>
             )}
@@ -47,12 +49,17 @@ export default function Toggle() {
                 <buttonSet.BackButton size={'60px'} onClick={() => redirect('back')}></buttonSet.BackButton>
                 <buttonSet.AddButton size={'60px'} onClick={() => redirect()}></buttonSet.AddButton>
             </ButtonContainer>
-        </>
+        </Container>
     );
 };
 
 const ButtonContainer = styled.div`
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     margin-top:10%;
+`;
+const Container=styled.div`
+    margin-top:10%;  
+    display: flex;
+    flex-direction: column;
 `;

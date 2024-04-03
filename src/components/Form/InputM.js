@@ -20,4 +20,5 @@ const InputBox = styled.input`
     color: #000000;
     margin-bottom: 13px; 
     padding-left:2% ;
+    text-align: center; 
 `;

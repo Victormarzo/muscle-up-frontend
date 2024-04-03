@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import {
-    FaCheckSquare,
-    FaWindowClose 
+    FaTimesCircle,
+    FaCheckCircle,
+     
 }from 'react-icons/fa';
 import useToogleWorkout from '../../hooks/api/useToogleWorkout';
 
@@ -17,9 +17,9 @@ export default function AllWorkout({ name, active, id, setUpdateWorkout, updateW
     let symbol=symbolAdd(active);
     function symbolAdd(active) {
         if(active) {
-            return <FaCheckSquare size='20px' color = 'green' />;
+            return <FaCheckCircle size='24px' color = '#90FBFF' />;
         }else {
-            return <FaWindowClose size='20px' color = 'red' />;
+            return <FaTimesCircle size='24px' color = '#90FBFF' />;
         }
     };
     
@@ -29,7 +29,7 @@ export default function AllWorkout({ name, active, id, setUpdateWorkout, updateW
                 <h1 onClick={ () => navigate(`/workout-display/${id}`)} >{name}</h1>
             </div>
             <Container onClick={() => toogle(id)}>
-                Ativo: {symbol} 
+                {symbol} 
             </Container>
             
         </ActiveDiv>
@@ -41,8 +41,9 @@ const ActiveDiv=styled.div`
     justify-content: space-between;
     width: 85vw;
     border-radius: 10px;
-    margin-top:10px;
-    padding: 10px;
+    border: solid 1px white;
+    margin-top:3%;
+    padding: 15px;
     background-color:#A1C6CB;
     margin-bottom: 20px;
     h1{
@@ -51,7 +52,7 @@ const ActiveDiv=styled.div`
         font-weight: 400;
         font-size: 28px;
         line-height: 23px;
-        color:white;
+        color:black;
     }
 `;
 

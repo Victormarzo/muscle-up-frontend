@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import SubTitle from './Subtitle';
@@ -41,9 +40,9 @@ const ActiveDiv=styled.div`
     align-items: center;
     width: 85vw;
     border-radius: 10px;
-    margin-top:10%;
-    padding: 5%;
-    border: 30px white ;   
-    background-color: #DDF8EF;
+    margin-top:5vh;
+    border: solid 1px white;
+    padding: 15px;
+    background-color:#A1C6CB;
 `;
 

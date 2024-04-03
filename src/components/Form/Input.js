@@ -10,7 +10,7 @@ const InputBox = styled.input`
     width: 326px;
     height: 58px;
     background: #A1C6CB;
-    border-radius: 25px;
+    border-radius: 10px;
     border:0;
     font-family: 'Raleway';
     font-style: normal;

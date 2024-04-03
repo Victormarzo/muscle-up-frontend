@@ -75,7 +75,7 @@ export async function workoutCheckA(token) {
 }
 
 export async function getLastWorkout(token) {
-    const response = await api.get('/workout/current', {
+    const response = await api.get('/workout/last', {
         headers: {
             Authorization: `Bearer ${token}`,
         },

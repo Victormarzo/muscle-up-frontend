@@ -35,17 +35,18 @@ export default function SignIn() {
     return (
         <>
             <Logo></Logo>
-            <Title>Login</Title>
-            <Redirect onClick={redirect}>Já possui conta? Faça login aqui</Redirect>
+            <Title>Inscrição</Title>
             <Form onSubmit={submit}>
                 <Text>EMAIL</Text>
                 <Input label="E-mail" placeholder = 'email' type="text" value={email} onChange={e => setEmail(e.target.value)} ></Input>
                 <Text>SENHA</Text>
                 <Input label="Senha" placeholder = 'password'type="password" value={password} onChange={e => setPassword(e.target.value)}></Input>
-                <Text>NOMEs</Text>
+                <Text>NOME</Text>
                 <Input label="name" placeholder = 'name' type="text" value={name} onChange={e => setName(e.target.value)}></Input>
+                <Space/>
                 <Button type="submit">Cadastrar</Button>
             </Form>
+            <Redirect onClick={redirect}>Já possui conta? Faça login aqui</Redirect>
         </>
     );
 }
@@ -53,7 +54,16 @@ export default function SignIn() {
 const Form = styled.form`
     display: flex;
     flex-direction: column;
+    p{
+        font-size: 18px;
+    }
 `;
+
+const Space = styled.div`
+    height:44px;
+
+`;
+
 const Text = styled.p`
     color: white;
     font-family: 'Anton', sans-serif;

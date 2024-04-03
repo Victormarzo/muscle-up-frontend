@@ -60,7 +60,7 @@ export default function Create() {
         navigate('/toggle');
     }
     return (
-        <>
+        <CContainer>
             <Title>NOVO TREINO</Title>
             <Form>
                 <NInput 
@@ -71,8 +71,8 @@ export default function Create() {
                 ></NInput>
                 {exInputs.length!==0?
                     (exInputs.map((input, index) => 
-                        <Container>
-                            <div key={index}>
+                        <Container key={index}>
+                            <div >
                                 <Input type = 'text'
                                     name='exercise'
                                     required
@@ -109,23 +109,23 @@ export default function Create() {
                     )):(<></>)}
                 <ButtonContainer>
                     <buttonSet.BackButton 
-                        size='50px'
+                        size='60px'
                         onClick={redirect}>
                     </buttonSet.BackButton>
                     <buttonSet.AddButton
-                        size='50px'
+                        size='60px'
                         type= 'button'
                         onClick={addInput}>
                     </buttonSet.AddButton>
                     <buttonSet.ConfirmButton 
-                        size='50px'
+                        size='60px'
                         type='submit'
                         onClick={handleSubmit}>
                     </buttonSet.ConfirmButton>
                     
                 </ButtonContainer>
             </Form>
-        </>
+        </CContainer>
         
     );
 }
@@ -146,8 +146,8 @@ const Form=styled.form`
 
 `;
 const NInput= styled(Input)`
-    width: 351px;
-    margin-bottom:150px;
+    width: 85vw;
+    margin: 10% 0 10% 0;
 `;
 const X = styled.p`
     color: white;
@@ -157,11 +157,20 @@ const Container=styled.div`
     justify-content: center;
     align-items: center;
     margin-bottom:10%;
+    background:#476C7C;
+    padding: 5%;
+    border-radius: 10px;
 `;
 
 const ButtonContainer = styled.div`
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     margin-top:10%;
     
+`;
+const CContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-top:5vh;
+    width: 85vw;
 `;

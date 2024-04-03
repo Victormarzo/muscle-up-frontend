@@ -22,7 +22,7 @@ export default function SignIn() {
             const userData = await signIn(email, password);
             setUserData(userData);
             alert('Login realizado com sucesso!');
-            navigate('/active-workout');
+            navigate('/');
         } catch (err) {
             alert('Não foi possível fazer o login!');
         }
@@ -41,11 +41,11 @@ export default function SignIn() {
                 <Input label="E-mail" type="text" value={email} onChange={e => setEmail(e.target.value)} ></Input>
                 <Text>SENHA</Text>
                 <Input label="Senha" type="password" value={password} onChange={e => setPassword(e.target.value)}></Input>
+                <Space/>
                 <Button type="submit">Entrar </Button>
             </Form>
-            <Redirect>
-                <Text>Ainda não tem conta?</Text>
-                <Button onClick={redirect}>Inscreva-se</Button>
+            <Redirect onClick={redirect}>
+                Ainda não tem conta? Inscreva-se
             </Redirect>
       
         </>
@@ -59,7 +59,10 @@ const Form = styled.form`
         font-size: 18px;
     }
 `;
+const Space = styled.div`
+    height:156px;
 
+`;
 const Text = styled.p`
     color: white;
     font-family: 'Anton', sans-serif;
@@ -67,7 +70,9 @@ const Text = styled.p`
     margin-bottom: 10px;
 `;
 
-const Redirect = styled.div`
-    margin-top:20%;
+const Redirect = styled(Text)`
+    
+    text-align: center;
+    text-decoration: underline;
     text-align: center;
 `;

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useExcutionById from '../hooks/api/useExecutionById';
-import LastExecution from './Execution/LastExecution';
 import Title from './Workout/Title';
 import InputM from './Form/InputM';
 import InputP from './Form/InputP';
@@ -14,37 +13,38 @@ import buttonSet from './Form/Buttons';
 export default function Execution() {
     const { exerciseId } = useParams();
     const [executions, setExecutions] = useState();
-    const{ executionById } = useExcutionById(exerciseId);
+    const { executionById } = useExcutionById(exerciseId);
     const [inputs, setInputs] = useState();
-    const { newExecution }= useNewExecution();
+    const { newExecution } = useNewExecution();
     const navigate = useNavigate();
     const [workoutId, setWorkoutId] = useState();
     const [lastE, setLastE] = useState();
+
     useEffect(() => {
-        if(executionById) {
+        if (executionById) {
             setExecutions(executionById);
         }
     }, [executionById]);
 
     function renderForm(reps) {
-        let repsNum=Number(reps);
-        const allInputs=[];
-        const repsNumDouble=2*repsNum;
+        let repsNum = Number(reps);
+        const allInputs = [];
+        const repsNumDouble = 2 * repsNum;
         let rep;
-        if(executions.Execution.length!==0) {
-            for(let i = 0; i<repsNumDouble; i++) {
-                if(i%2!==0) {
-                    rep={ title: `input${i}`, value: '', last: executions.Execution[(i-1)/2].reps };
-                }else {
-                    rep={ title: `input${i}`, value: '', last: executions.Execution[i-(i/2)].weight };
+        if (executions.Execution.length !== 0) {
+            for (let i = 0; i < repsNumDouble; i++) {
+                if (i % 2 !== 0) {
+                    rep = { title: `input${i}`, value: '', last: executions.Execution[(i - 1) / 2].reps };
+                } else {
+                    rep = { title: `input${i}`, value: '', last: executions.Execution[i - (i / 2)].weight };
                 }
                 setLastE(dayjs(executions.Execution[0].createdAt).format('DD/MM/YYYY'));
                 allInputs.push(rep);
             }
             setInputs(allInputs);
-        }else{
-            for(let i = 0; i<repsNum*2; i++) {
-                rep={ title: `input${i}`, value: '' };
+        } else {
+            for (let i = 0; i < repsNum * 2; i++) {
+                rep = { title: `input${i}`, value: '' };
                 allInputs.push(rep);
             }
             setInputs(allInputs);
@@ -53,25 +53,25 @@ export default function Execution() {
     async function handleSubmit(event) {
         event.preventDefault();
         let obj;
-        let executions=[];
-        for (let i =0; i<inputs.length; i++) {
-            if(i%2!==0) {
-                obj={
+        let executions = [];
+        for (let i = 0; i < inputs.length; i++) {
+            if (i % 2 !== 0) {
+                obj = {
                     exerciseId: Number(exerciseId),
                     reps: Number(inputs[i].value),
-                    weight: Number(inputs[i-1].value)
+                    weight: Number(inputs[i - 1].value)
                 };
                 executions.push(obj);
             }
         }
-        const exe={ executions };
+        const exe = { executions };
         try {
             await newExecution(exe);
             console.log('deu');
             navigate(-1);
         } catch (error) {
             console.log('n deu', error);
-        } 
+        }
     }
 
     function handleInputUpdate(ev, index) {
@@ -80,13 +80,13 @@ export default function Execution() {
         updatedInput.value = ev.target.value;
         setInputs(newInputs);
     }
-    
+
     function checkExecution() {
-        const reps=executions.sets.split('x', 1);
+        const reps = executions.sets.split('x', 1);
         renderForm(reps);
     }
 
-    if(executions && !inputs) {
+    if (executions && !inputs) {
         checkExecution();
         setWorkoutId(executions.workoutId);
     }
@@ -95,73 +95,76 @@ export default function Execution() {
     }
     return (
         <ExeForm onSubmit={handleSubmit}>
-            {executions?(
+            {executions ? (
                 <>
-                    
                     <Title>{executions.name}</Title>
                     <SubtitleContainer>
-                        <SpamW><p>Carga</p></SpamW>
-                        <SpamR><p>Repetições</p></SpamR>
+                        <p>Repetições</p>
+                        {lastE?(<SpamW><p>{lastE}</p></SpamW>):(<NolastE/>)}
+                        <SpamR><p>Carga</p></SpamR>
                     </SubtitleContainer>
                 </>
-            ):(<></>)}
-            {executions&&inputs?
+            ) : (<></>)}
+            {executions && inputs ?
                 (
-                    inputs.length!==0?(executions.Execution.length!==0?(
+                    inputs.length !== 0 ? (executions.Execution.length !== 0 ? (
                         inputs.map((input, index) => {
-                            if(index%2!==0) {
+                            if (index % 2 !== 0) {
                                 return (
-                                    <>
-                                        <LastExecution
-                                            reps={input.last}
-                                            weight={inputs[index-1].last}
-                                            key={index} 
-                                            last={lastE}
-                                        >
-                                        </LastExecution>
+                                    <Grid key={index}>
                                         <ExeContainer>
-                                            <InputM value={input.value}
-                                                onChange = {(ev) => handleInputUpdate(ev, index)}
-                                                key={index}
-                                                type={'number'}
-                                                required={'required'}
-                                            ></InputM>
-                                            <InputP value={inputs[index-1].value}
-                                                onChange = {(ev) => handleInputUpdate(ev, index-1)}
-                                                key={index-1}
-                                                type={'number'}
-                                                required={'required'}
-                                            ></InputP>
+                                            <SDivs>
+                                                <p>{input.last}</p>
+                                                <InputP value={inputs[index - 1].value}
+                                                    onChange={(ev) => handleInputUpdate(ev, index - 1)}
+                                                    type={'number'}
+                                                    required={'required'}
+                                                    placeholder={input.last}
+                                                ></InputP>
+
+                                            </SDivs>
+                                            <SDivs>
+                                                <p>{inputs[index - 1].last}</p>
+                                                <InputM value={input.value}
+                                                    onChange={(ev) => handleInputUpdate(ev, index)}
+
+                                                    type={'number'}
+                                                    required={'required'}
+                                                    placeholder={inputs[index - 1].last}
+                                                ></InputM>
+                                            </SDivs>
                                         </ExeContainer>
-                                    </>
-                                );
-                            };     
-                        })
-                    ):(
-                        inputs.map((input, index) => {
-                            if(index%2!==0) {
-                                return (
-                                    <ExeContainer>
-                                        <InputM value={input.value}
-                                            onChange = {(ev) => handleInputUpdate(ev, index)}
-                                            key={index}
-                                            type={'number'}
-                                            required
-                                        ></InputM>
-                                        <InputP value={inputs[index-1].value}
-                                            onChange = {(ev) => handleInputUpdate(ev, index-1)}
-                                            key={index-1}
-                                            type={'number'}
-                                            required
-                                        ></InputP>
-                                    </ExeContainer>    
+                                    </Grid>
                                 );
                             };
                         })
-                    )):(<>aaaaaaaaaaaa</>)
-                    
-                ):(<>ssssssssss</>)}
-            {executions?
+                    ) : (
+                        inputs.map((input, index) => {
+                            if (index % 2 !== 0) {
+                                return (
+                                    <Grid key={index}>
+                                        <ExeContainer >
+                                            <InputP value={inputs[index - 1].value}
+                                                onChange={(ev) => handleInputUpdate(ev, index - 1)}
+
+                                                type={'number'}
+                                                required
+                                            ></InputP>
+                                            <InputM value={input.value}
+                                                onChange={(ev) => handleInputUpdate(ev, index)}
+
+                                                type={'number'}
+                                                required
+                                            ></InputM>
+                                        </ExeContainer>
+                                    </Grid>
+                                );
+                            };
+                        })
+                    )) : (<>aaaaaaaaaaaa</>)
+
+                ) : (<>ssssssssss</>)}
+            {executions ?
                 (
                     <>
                         <Center>
@@ -170,20 +173,29 @@ export default function Execution() {
                         <ButtonContainer>
                             <buttonSet.BackButton size={'60px'} onClick={redirect}></buttonSet.BackButton>
                         </ButtonContainer>
-                        
+
                     </>
-                ):(<></>)}
+                ) : (<></>)}
         </ExeForm>
     );
 };
 
-const ExeContainer=styled.div`
+const SDivs = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+const NolastE= styled.div`
+    width:119px;
+`;
+const ExeContainer = styled.div`
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     width: 85vw;
     border-radius: 10px;
     margin-top:10px;
+    padding: 0 10% 0 10%;
     p{
         font-family: 'Raleway';
         font-style: normal;
@@ -203,16 +215,20 @@ const ExeContainer=styled.div`
     
 `;
 
-const ExeForm=styled.form`
-
+const ExeForm = styled.form`
+    margin-top:10%;
+    display: flex;
+    flex-direction: column;   
+    width: 85vw;  
 `;
 const SubtitleContainer = styled.span`    
     display: flex;
     align-items: center;
-    justify-content: space-around;
     width: 85vw;
     border-radius: 10px;
-    margin-top:10px;
+    margin-top:10%;
+    margin-bottom:10%;
+    padding: 0 10% 0 10%;
     p{
         font-family: 'Raleway';
         font-style: normal;
@@ -223,23 +239,29 @@ const SubtitleContainer = styled.span`
     }
 `;
 const SpamR = styled.span`
-    width: 70px;
-    margin-left: -52px;
+    margin-left:50px
 `;
 
 const SpamW = styled.span`
-    width: 100px;
-    margin-left: 12px;
+    margin-left:30px
 `;
-const Center=styled.div`
+const Center = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 10%;
 `;
 const ButtonContainer = styled.div`
     display: flex;
     justify-content: space-around;
     margin-top:10%;
     padding-bottom:10%;
+`;
+
+const Grid = styled.div`
+   background:#476C7C;
+   border-radius: 10px;
+    p{
+        color:black
+    }
+    margin-bottom:10%;
 `;

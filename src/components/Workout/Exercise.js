@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import styled from 'styled-components';
-import Title from './Title';
 import { FaDumbbell, FaCheckCircle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,7 +14,7 @@ export default function Exercise( { id, name, sets, date, read }) {
         let icon;
         const last = dayjs(date[0].updatedAt).format('DD/MM/YYYY');
         const now = dayjs().format('DD/MM/YYYY');
-        if (last == now) {
+        if (last === now) {
             icon = <FaCheckCircle size='20px' color = 'white' />;
         }else {
             icon =<FaDumbbell size='20px' color = 'white' />;
@@ -38,29 +37,26 @@ export default function Exercise( { id, name, sets, date, read }) {
 const ExerciseDiv=styled.div`
     display: flex;
     justify-content: space-between;
-    width: 85vw;
+    width:100%;
     border-radius: 10px;
     font-family: 'Raleway';
     font-style: normal;
     font-weight: 400;
     font-size: 20px;
     line-height: 23px;
-    color:white;
+    color:black; 
+    
 `;
-const P=styled.p`
-    font-family: 'Raleway';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    color:white;
-`;
+
 const Container = styled.div`
+    width: 85vw;    
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 10px;
     background-color:#A1C6CB;
-    padding: 10px;
-    margin-bottom: 7%;
-
+    padding: 15px;
+    margin-top:3%;
+    margin-bottom: 20px;
+    border: solid 1px white;
 `;

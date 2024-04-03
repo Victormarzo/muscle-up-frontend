@@ -20,15 +20,18 @@ export default function Workout() {
 
     async function finishThisWorkout() {
         let status;
-        status = checkWorkout; 
+        status = checkWorkout;
         if (status===true) {
             await finishWorkoutC();
             navigate('/');
             console.log('acho que deu boa');
+            //pop up de finalizado
         }else {
+            //pop up de nao poder finalizar
             console.log('faz nada nao');
         }
     }
+
     useEffect(() => {
         if(workoutById) {
             setWorkout(workoutById);
@@ -38,6 +41,7 @@ export default function Workout() {
     function redirect() {
         navigate(-1);
     }
+
     return (
         <>
             {workout.length!==0?(
@@ -67,7 +71,7 @@ export default function Workout() {
 };
 
 const CenterContainer=styled.div`
-    margin-top: 15%;
+    margin-top: 10%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -77,9 +81,11 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     margin-top:10%;
+    
 `;
 const ButtonContainer = styled.div`
     display: flex;
     justify-content: space-around;
     margin-top:10%;
+    
 `;
