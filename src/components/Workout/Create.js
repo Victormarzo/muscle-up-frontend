@@ -8,15 +8,20 @@ import Title from './Title';
 export default function Create() {
     const [exInputs, setExInputs] = useState([
         { exercise: '', sets: '', reps: '' }
-        
+
     ]);
     const [exName, setExName] = useState('');
-    const navigate= useNavigate();
+    const navigate = useNavigate();
     const { newWorkout } = useNewWorkout();
 
     async function handleSubmit(event) {
         event.preventDefault();
-        console.log(exInputs);
+        let status = checkStatus();
+        if(!status) {
+            console.log('Preencha todos os campos');
+            return; 
+            //pop up de preenchimento
+        } 
         const newEx = concatenateSetRep();
         const obj = {
             name: exName,
@@ -25,15 +30,27 @@ export default function Create() {
         try {
             await newWorkout(obj);
             console.log('deu');
+            //pop up  de criado com sucesso
             navigate('/');
         } catch (error) {
             console.log('n deu', error);
-        } 
+            //pop up de erro na criação
+        }
     }
+
+    function checkStatus() {
+        for (let i = 0; i < exInputs.length; i++) {
+            if (!exName || !exInputs[i].exercise || !exInputs[i].reps || !exInputs[i].sets) {
+                return false;
+            } 
+        }
+        return true;
+    }
+
     function concatenateSetRep() {
-        let newEx=[];
-        for(let i=0; i<exInputs.length; i++) {
-            newEx.push( {
+        let newEx = [];
+        for (let i = 0; i < exInputs.length; i++) {
+            newEx.push({
                 name: exInputs[i].exercise,
                 sets: `${exInputs[i].sets}x${exInputs[i].reps}`
             });
@@ -42,16 +59,16 @@ export default function Create() {
     }
     function handleInputUpdate(event, index) {
         const newInputs = [...exInputs];
-        newInputs[index][event.target.name]=event.target.value;
+        newInputs[index][event.target.name] = event.target.value;
         setExInputs(newInputs);
     }
-    
+
     function addInput() {
         setExInputs([...exInputs, { exercise: '', sets: '', reps: '' }]);
-    } 
+    }
 
     function removeInput(index) {
-        const temp= [...exInputs];
+        const temp = [...exInputs];
         temp.splice(index, 1);
         setExInputs(temp);
     }
@@ -61,72 +78,75 @@ export default function Create() {
     }
     return (
         <CContainer>
-            <Title>NOVO TREINO</Title>
+            <Title>Novo treino</Title>
             <Form>
-                <NInput 
+                <NInput
                     type='text'
-                    value={exName} 
-                    onChange={e => setExName(e.target.value)} 
-                    placeholder = 'Nome do treino'
+                    value={exName}
+                    onChange={e => setExName(e.target.value)}
+                    placeholder='Nome do treino'
                 ></NInput>
-                {exInputs.length!==0?
-                    (exInputs.map((input, index) => 
+                {exInputs.length !== 0 ?
+                    (exInputs.map((input, index) =>
                         <Container key={index}>
                             <div >
-                                <Input type = 'text'
+                                <Input type='text'
                                     name='exercise'
                                     required
-                                    placeholder = 'Exercicio'
-                                    value ={input.exercise}
+                                    placeholder='Exercicio'
+                                    value={input.exercise}
                                     onChange={event => handleInputUpdate(event, index)}
                                 ></Input>
-                            
+
                                 <NewEx>
-                                    <SInput type = 'number'
+                                    <SInput type='number'
                                         name='sets'
                                         required
-                                        placeholder = 'Series'
-                                        value ={input.sets}
+                                        placeholder='Series'
+                                        value={input.sets}
                                         onChange={event => handleInputUpdate(event, index)}
                                     ></SInput>
                                     <X>X</X>
-                                    <SInput type = 'number'
-                                        name ='reps'
+                                    <SInput type='number'
+                                        name='reps'
                                         required
-                                        placeholder = 'Reps'
-                                        value ={input.reps}
+                                        placeholder='Reps'
+                                        value={input.reps}
                                         onChange={event => handleInputUpdate(event, index)}
                                     ></SInput>
                                 </NewEx>
                             </div>
-                            <buttonSet.RemoveButton 
+                            <buttonSet.RemoveButton
                                 size='25px'
-                                type= 'button'
+                                type='button'
                                 onClick={() => removeInput(index)}
                             >remove</buttonSet.RemoveButton>
                         </Container>
-                        
-                    )):(<></>)}
+
+                    )) : (<></>)}
+                <AddButtonContainer>
+                    <buttonSet.AddButton
+                        size='25px'
+                        type='button'
+                        onClick={addInput}>
+                    </buttonSet.AddButton>
+                </AddButtonContainer>
                 <ButtonContainer>
-                    <buttonSet.BackButton 
+                    <buttonSet.BackButton
                         size='60px'
                         onClick={redirect}>
                     </buttonSet.BackButton>
-                    <buttonSet.AddButton
-                        size='60px'
-                        type= 'button'
-                        onClick={addInput}>
-                    </buttonSet.AddButton>
-                    <buttonSet.ConfirmButton 
+
+                    <buttonSet.ConfirmButton
                         size='60px'
                         type='submit'
                         onClick={handleSubmit}>
                     </buttonSet.ConfirmButton>
-                    
+
                 </ButtonContainer>
             </Form>
         </CContainer>
-        
+
     );
 }
 
@@ -140,23 +160,23 @@ const SInput = styled(Input)`
     width: 100px;
     margin-bottom: 0px;
 `;
-const Form=styled.form`
+const Form = styled.form`
     display: flex;
     flex-direction: column;
 
 `;
-const NInput= styled(Input)`
+const NInput = styled(Input)`
     width: 85vw;
     margin: 10% 0 10% 0;
 `;
 const X = styled.p`
     color: white;
 `;
-const Container=styled.div`
+const Container = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom:10%;
+    margin-bottom:5%;
     background:#476C7C;
     padding: 5%;
     border-radius: 10px;
@@ -165,9 +185,15 @@ const Container=styled.div`
 const ButtonContainer = styled.div`
     display: flex;
     justify-content: space-between;
-    margin-top:10%;
+    margin:5% 0 5% 0 ;
     
 `;
+
+const AddButtonContainer = styled(ButtonContainer)`
+    justify-content: center;
+    margin-top:0;
+`;
+
 const CContainer = styled.div`
     display: flex;
     flex-direction: column;

@@ -33,7 +33,7 @@ export default function Home() {
             setLast(lastWorkout);
         }
     }, [lastWorkout]);
-
+    
     function redirect(option) {
         if (option === 1) {
             navigate(`/workout/${current}`);
@@ -46,7 +46,6 @@ export default function Home() {
     function dataParse(date) {
         return dayjs(date).format('DD/MM/YYYY');
     }
-
     const currentNotification =
         <CurrentContainer >
             <NotificationP>Você possui um treino em andamento</NotificationP>
@@ -59,10 +58,12 @@ export default function Home() {
             <Title>Olá, {userName}</Title>
             {last ? (<Last>
                 <Title>Ultimo treino:</Title>
-                <LastWorkout>{last.name}</LastWorkout>
+                <LastWorkout>{last.Workout.name}</LastWorkout>
                 <p>{dataParse(last.updatedAt)}</p>
             </Last>) :
                 (<SpaceDiv>
+                    <p>Parece que você ainda não fez nenhum treino</p>
+                    <NotificationS onClick={() => redirect(2)}>Bora treinar?</NotificationS>
                 </SpaceDiv>)}
 
             <ButtonContainer>
@@ -91,7 +92,7 @@ const ButtonContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     width: 85vw;
-    margin-top:60%;
+    margin:60% 0 10% 0 ;
 `;
 
 const NotificationP = styled.p`
@@ -152,4 +153,16 @@ const LastWorkout = styled.div`
 
 const SpaceDiv = styled.div`
     height:188px;
+    display:flex;    
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    p{
+        font-size: 22px;
+        margin-top:20px;
+        color:white;
+        text-align: center;
+    }
+    
+    
 `;

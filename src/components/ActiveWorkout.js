@@ -17,8 +17,12 @@ export default function ActiveWorkout() {
         }
     }, [activeWorkout]);
     
-    function redirect() {
-        navigate('/');
+    function redirect(option) {
+        if (option ===1) {
+            navigate('/');
+        }else if (option ===2) {
+            navigate('/create');
+        }
     }
     
     return(
@@ -33,10 +37,13 @@ export default function ActiveWorkout() {
                     last={workout.Exercise[0].Execution} 
                     id={workout.id}></Active>
             )):(
-                <Title>Você ainda não tem treinos</Title>
+                <SpaceDiv>
+                    <p>Você ainda não tem treinos</p>
+                    <h3 onClick={() => redirect(2)} >Bora criar?</h3>
+                </SpaceDiv>
             )}
             <ButtonContainer>
-                <buttonSet.BackButton size={'60px'} onClick={redirect}></buttonSet.BackButton>
+                <buttonSet.BackButton size={'60px'} onClick={() => redirect(1)}></buttonSet.BackButton>
             </ButtonContainer>
 
         </Container>
@@ -54,4 +61,21 @@ const ButtonContainer = styled.div`
     display: flex;
     justify-content: space-around;
     margin-top:10%;
+`;
+
+const SpaceDiv = styled.div`
+    text-align: center;
+    font-size: 22px;
+    color:white;
+    margin-top:20px;
+    p{
+        margin-top:20px;
+        text-align: center;
+    }
+    h3{
+        margin-top:20px;
+        color:white;
+        text-decoration: underline;
+        margin-bottom:20px;
+    }
 `;

@@ -16,61 +16,61 @@ export default function Workout() {
     const { workoutById } = useWorkoutById(workoutId);
     const { checkWorkout } = useCheckWorkout();
     const { finishWorkoutC } = useFinishWorkout();
+    const [status, setStatus] = useState('a');
     const navigate = useNavigate();
 
     async function finishThisWorkout() {
-        let status;
-        status = checkWorkout;
-        if (status===true) {
+        if (status === true) {
             await finishWorkoutC();
             navigate('/');
             console.log('acho que deu boa');
             //pop up de finalizado
-        }else {
+        } else {
             //pop up de nao poder finalizar
             console.log('faz nada nao');
         }
     }
-
+    console.log(status);
     useEffect(() => {
-        if(workoutById) {
+        if (workoutById) {
             setWorkout(workoutById);
+            setStatus(checkWorkout);
+            console.log(status);
         }
     }, [workoutById]);
 
     function redirect() {
         navigate(-1);
     }
-
     return (
         <>
-            {workout.length!==0?(
+            {workout.length !== 0 ? (
                 <Container>
                     <Title>{workout[0].Workout.name}</Title>
-                    {workout.map((exercise) => 
-                        <Exercise  
-                            id={exercise.id} 
-                            name={exercise.name} 
-                            key={exercise.id} 
-                            date={exercise.Execution} 
-                            sets={exercise.sets} 
+                    {workout.map((exercise) =>
+                        <Exercise
+                            id={exercise.id}
+                            name={exercise.name}
+                            key={exercise.id}
+                            date={exercise.Execution}
+                            sets={exercise.sets}
                             read={true}
                         >
                         </Exercise>
                     )}
                     <CenterContainer>
-                        <Button onClick={finishThisWorkout}>Finalizar treino</Button>
+                        <FinishButton disabled={!status} onClick={finishThisWorkout}>Finalizar treino</FinishButton>
                     </CenterContainer>
                     <ButtonContainer>
                         <buttonSet.BackButton size={'60px'} onClick={redirect}></buttonSet.BackButton>
                     </ButtonContainer>
                 </Container>
-            ):(<></>)}
+            ) : (<></>)}
         </>
     );
 };
 
-const CenterContainer=styled.div`
+const CenterContainer = styled.div`
     margin-top: 10%;
     display: flex;
     justify-content: center;
@@ -88,4 +88,10 @@ const ButtonContainer = styled.div`
     justify-content: space-around;
     margin-top:10%;
     
+`;
+const FinishButton = styled(Button)`   
+    :disabled {
+        color:#6E95A7;
+    };
+
 `;

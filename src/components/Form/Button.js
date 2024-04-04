@@ -20,6 +20,6 @@ const ButtonBox= styled.button`
     font-size: 20px;
     line-height: 23px;    
     color: black;
-   
+    
 }
 `;

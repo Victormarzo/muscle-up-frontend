@@ -1,5 +1,5 @@
 import useAsync from '../useAsync';
-import * as workoutApi from '../../services/workoutApi';
+import * as historyApi from '../../services/historyApi';
 import useToken from '../useToken';
 
 export default function useGetLastWorkout() {
@@ -9,7 +9,7 @@ export default function useGetLastWorkout() {
         loading: lastWorkoutLoading,
         error: lastWorkoutError,
         act: getLastWorkout
-    } = useAsync(() => workoutApi.getLastWorkout(token));
+    } = useAsync(() => historyApi.getLastWorkout(token));
 
     return {
         lastWorkout,
