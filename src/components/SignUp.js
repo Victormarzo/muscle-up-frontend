@@ -7,26 +7,30 @@ import UserContext from '../contexts/UserContext';
 import styled from 'styled-components';
 import Logo from './Logo';
 import Title from './Workout/Title';
+import Toast from './Toast';
+import { toast } from 'react-toastify'; 
 
 export default function SignIn() {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');  
-    const [name, setName] = useState('');  
-    const { setUserData } = useContext(UserContext); 
+    const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
+    const { setUserData } = useContext(UserContext);
     const navigate = useNavigate();
 
     async function submit(event) {
         event.preventDefault();
-    
+
         try {
             const userData = await signUp(email, password, name);
             setUserData(userData);
-            alert('Cadastro realizado com sucesso!');
-            navigate('/sign-in');
+            toast('Cadastro realizado com sucesso!');
+            setTimeout(() => {
+                navigate('/sign-in');
+            }, 2000);
         } catch (err) {
-            alert('Não foi possível fazer o cadastro!');
+            toast('Não foi possível fazer o cadastro!');
         }
-    } 
+    }
 
     function redirect() {
         navigate('/sign-in');
@@ -38,14 +42,15 @@ export default function SignIn() {
             <Title>Inscrição</Title>
             <Form onSubmit={submit}>
                 <Text>EMAIL</Text>
-                <Input label="E-mail" placeholder = 'email' type="text" value={email} onChange={e => setEmail(e.target.value)} ></Input>
+                <Input label="E-mail" placeholder='email' type="text" value={email} onChange={e => setEmail(e.target.value)} ></Input>
                 <Text>SENHA</Text>
-                <Input label="Senha" placeholder = 'password'type="password" value={password} onChange={e => setPassword(e.target.value)}></Input>
+                <Input label="Senha" placeholder='password' type="password" value={password} onChange={e => setPassword(e.target.value)}></Input>
                 <Text>NOME</Text>
-                <Input label="name" placeholder = 'name' type="text" value={name} onChange={e => setName(e.target.value)}></Input>
-                <Space/>
+                <Input label="name" placeholder='name' type="text" value={name} onChange={e => setName(e.target.value)}></Input>
+                <Space />
                 <Button type="submit">Cadastrar</Button>
             </Form>
+            <Toast />
             <Redirect onClick={redirect}>Já possui conta? Faça login aqui</Redirect>
         </>
     );

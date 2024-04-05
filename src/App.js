@@ -17,7 +17,7 @@ import Create from './components/Workout/Create';
 import Toggle from './components/Workout/Toggle';
 import Home from './components/Home';
 import GlobalStyle from './assets/styles/globalStyles';
-import Test from './components/Test';
+
 export default function App() {
     return (
         <>
@@ -34,7 +34,6 @@ export default function App() {
                         <Route path="/execution/:exerciseId" element={<ProtectedRouteGuard><Execution/></ProtectedRouteGuard>}/>
                         <Route path="/create" element={<ProtectedRouteGuard><Create/></ProtectedRouteGuard>} />
                         <Route path="/toggle" element={<ProtectedRouteGuard><Toggle/></ProtectedRouteGuard>} />
-                        <Route path="/test" element= {<Test/>}/>
                     </Routes>
                 </Router>
             </UserProvider>

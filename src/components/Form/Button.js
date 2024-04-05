@@ -19,7 +19,6 @@ const ButtonBox= styled.button`
     font-weight: 400;
     font-size: 20px;
     line-height: 23px;    
-    color: black;
-    
+    color:${props => props.status?'black':'#6E95A7'}
 }
 `;

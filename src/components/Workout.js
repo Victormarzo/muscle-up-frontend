@@ -9,6 +9,8 @@ import useFinishWorkout from '../hooks/api/useFinishWorkout';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import buttonSet from './Form/Buttons';
+import Toast from './Toast';
+import { toast } from 'react-toastify';
 
 export default function Workout() {
     const { workoutId } = useParams();
@@ -16,31 +18,32 @@ export default function Workout() {
     const { workoutById } = useWorkoutById(workoutId);
     const { checkWorkout } = useCheckWorkout();
     const { finishWorkoutC } = useFinishWorkout();
-    const [status, setStatus] = useState('a');
+    const [status, setStatus] = useState(false);
     const navigate = useNavigate();
-
     async function finishThisWorkout() {
         if (status === true) {
-            await finishWorkoutC();
-            navigate('/');
-            console.log('acho que deu boa');
-            //pop up de finalizado
+            try {
+                await finishWorkoutC();
+                toast('Treino finalizado com sucessos');
+                setTimeout(() => {
+                    navigate('/');
+                }, 2000);
+            } catch (error) {
+                toast('Não foi possivel finalizar o treino');
+            }
         } else {
-            //pop up de nao poder finalizar
-            console.log('faz nada nao');
+            toast('Preencha todos os campos');
         }
     }
-    console.log(status);
     useEffect(() => {
         if (workoutById) {
             setWorkout(workoutById);
             setStatus(checkWorkout);
-            console.log(status);
         }
-    }, [workoutById]);
+    }, [workoutById, checkWorkout]);
 
     function redirect() {
-        navigate(-1);
+        navigate('/active-workout');
     }
     return (
         <>
@@ -58,8 +61,9 @@ export default function Workout() {
                         >
                         </Exercise>
                     )}
+                    <Toast />
                     <CenterContainer>
-                        <FinishButton disabled={!status} onClick={finishThisWorkout}>Finalizar treino</FinishButton>
+                        <Button status={status} onClick={finishThisWorkout}>Finalizar treino</Button>
                     </CenterContainer>
                     <ButtonContainer>
                         <buttonSet.BackButton size={'60px'} onClick={redirect}></buttonSet.BackButton>
@@ -89,9 +93,4 @@ const ButtonContainer = styled.div`
     margin-top:10%;
     
 `;
-const FinishButton = styled(Button)`   
-    :disabled {
-        color:#6E95A7;
-    };
 
-`;

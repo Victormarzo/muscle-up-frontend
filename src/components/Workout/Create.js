@@ -5,6 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import useNewWorkout from '../../hooks/api/useNewWorkout';
 import buttonSet from '../Form/Buttons';
 import Title from './Title';
+import Toast from '../Toast';
+import { toast } from 'react-toastify';
+
 export default function Create() {
     const [exInputs, setExInputs] = useState([
         { exercise: '', sets: '', reps: '' }
@@ -17,11 +20,10 @@ export default function Create() {
     async function handleSubmit(event) {
         event.preventDefault();
         let status = checkStatus();
-        if(!status) {
-            console.log('Preencha todos os campos');
-            return; 
-            //pop up de preenchimento
-        } 
+        if (!status) {
+            toast('Preencha todos os campos');
+            return;
+        }
         const newEx = concatenateSetRep();
         const obj = {
             name: exName,
@@ -29,12 +31,12 @@ export default function Create() {
         };
         try {
             await newWorkout(obj);
-            console.log('deu');
-            //pop up  de criado com sucesso
-            navigate('/');
+            toast('Treino criado com sucessos');
+            setTimeout(() => {
+                navigate('/');
+            }, 2000);
         } catch (error) {
-            console.log('n deu', error);
-            //pop up de erro na criação
+            toast('Não foi possivel finalizar o treino');
         }
     }
 
@@ -42,7 +44,7 @@ export default function Create() {
         for (let i = 0; i < exInputs.length; i++) {
             if (!exName || !exInputs[i].exercise || !exInputs[i].reps || !exInputs[i].sets) {
                 return false;
-            } 
+            }
         }
         return true;
     }
@@ -142,7 +144,7 @@ export default function Create() {
                         type='submit'
                         onClick={handleSubmit}>
                     </buttonSet.ConfirmButton>
-
+                    <Toast />
                 </ButtonContainer>
             </Form>
         </CContainer>

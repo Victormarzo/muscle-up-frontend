@@ -9,6 +9,8 @@ import useNewExecution from '../hooks/api/useNewExecution';
 import dayjs from 'dayjs';
 import Button from './Form/Button';
 import buttonSet from './Form/Buttons';
+import { toast } from 'react-toastify';
+import Toast from './Toast';
 
 export default function Execution() {
     const { exerciseId } = useParams();
@@ -17,8 +19,8 @@ export default function Execution() {
     const [inputs, setInputs] = useState();
     const { newExecution } = useNewExecution();
     const navigate = useNavigate();
-    const [workoutId, setWorkoutId] = useState();
     const [lastE, setLastE] = useState();
+    const [status, setStatus] = useState(false);
 
     useEffect(() => {
         if (executionById) {
@@ -52,6 +54,9 @@ export default function Execution() {
     }
     async function handleSubmit(event) {
         event.preventDefault();
+        if(status===false) {
+            return toast('Preencha todos os campos');
+        }
         let obj;
         let executions = [];
         for (let i = 0; i < inputs.length; i++) {
@@ -67,17 +72,19 @@ export default function Execution() {
         const exe = { executions };
         try {
             await newExecution(exe);
-            console.log('deu');
-            navigate(-1);
+            toast('Execução registrada');
+            setTimeout(() => {
+                navigate(-1);
+            }, 2000);
         } catch (error) {
-            console.log('n deu', error);
+            toast('Erro no registro da execução');
         }
     }
-
     function handleInputUpdate(ev, index) {
         const newInputs = [...inputs];
         const updatedInput = newInputs[index];
         updatedInput.value = ev.target.value;
+        check(newInputs);
         setInputs(newInputs);
     }
 
@@ -88,11 +95,21 @@ export default function Execution() {
 
     if (executions && !inputs) {
         checkExecution();
-        setWorkoutId(executions.workoutId);
     }
     function redirect() {
         navigate(-1);
     }
+
+    function check(inputList) {
+        let statuscheck = true;
+        for (let i = 0; i < inputList.length; i++) {
+            if (!inputList[i].value) {
+                statuscheck = false;
+            }
+        }
+        setStatus(statuscheck);
+    }
+
     return (
         <ExeForm onSubmit={handleSubmit}>
             {executions ? (
@@ -100,7 +117,7 @@ export default function Execution() {
                     <Title>{executions.name}</Title>
                     <SubtitleContainer>
                         <p>Repetições</p>
-                        {lastE?(<SpamW><p>{lastE}</p></SpamW>):(<NolastE/>)}
+                        {lastE ? (<SpamW><p>{lastE}</p></SpamW>) : (<NolastE />)}
                         <SpamR><p>Carga</p></SpamR>
                     </SubtitleContainer>
                 </>
@@ -118,7 +135,7 @@ export default function Execution() {
                                                 <InputP value={inputs[index - 1].value}
                                                     onChange={(ev) => handleInputUpdate(ev, index - 1)}
                                                     type={'number'}
-                                                    required={'required'}
+
                                                     placeholder={input.last}
                                                 ></InputP>
 
@@ -129,7 +146,7 @@ export default function Execution() {
                                                     onChange={(ev) => handleInputUpdate(ev, index)}
 
                                                     type={'number'}
-                                                    required={'required'}
+
                                                     placeholder={inputs[index - 1].last}
                                                 ></InputM>
                                             </SDivs>
@@ -148,13 +165,13 @@ export default function Execution() {
                                                 onChange={(ev) => handleInputUpdate(ev, index - 1)}
 
                                                 type={'number'}
-                                                required
+
                                             ></InputP>
                                             <InputM value={input.value}
                                                 onChange={(ev) => handleInputUpdate(ev, index)}
 
                                                 type={'number'}
-                                                required
+
                                             ></InputM>
                                         </ExeContainer>
                                     </Grid>
@@ -168,12 +185,12 @@ export default function Execution() {
                 (
                     <>
                         <Center>
-                            <Button type='submit'>Finalizar</Button>
+                            <Button status={status} type='submit'>Finalizar</Button>
                         </Center>
                         <ButtonContainer>
                             <buttonSet.BackButton size={'60px'} onClick={redirect}></buttonSet.BackButton>
                         </ButtonContainer>
-
+                        <Toast/>
                     </>
                 ) : (<></>)}
         </ExeForm>
@@ -185,7 +202,7 @@ const SDivs = styled.div`
     flex-direction: column;
     align-items: center;
 `;
-const NolastE= styled.div`
+const NolastE = styled.div`
     width:119px;
 `;
 const ExeContainer = styled.div`
