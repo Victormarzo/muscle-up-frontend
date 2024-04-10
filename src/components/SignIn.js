@@ -1,6 +1,5 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signIn } from '../services/userApi';
 import Button from './Form/Button';
 import Input from './Form/Input';
 import UserContext from '../contexts/UserContext';
@@ -9,10 +8,12 @@ import Logo from './Logo';
 import Title from './Workout/Title';
 import Toast from './Toast';
 import { toast } from 'react-toastify';
+import useSignIn from '../hooks/api/useSignIn';
 
 export default function SignIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const { signIn } = useSignIn();
     const { setUserData } = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -20,8 +21,8 @@ export default function SignIn() {
         event.preventDefault();
 
         try {
-            console.log(password);
-            const userData = await signIn(email, password);
+            const body={ email, password };
+            const userData = await signIn(body);
             setUserData(userData);
             toast('Login realizado com sucesso!');
             setTimeout(() => {
@@ -46,7 +47,7 @@ export default function SignIn() {
                 <Text>SENHA</Text>
                 <Input label="Senha" type="password" value={password} onChange={e => setPassword(e.target.value)}></Input>
                 <Space />
-                <Button type="submit">Entrar </Button>
+                <Button status={true} type="submit">Entrar </Button>
             </Form>
             <Redirect onClick={redirect}>
                 Ainda não tem conta? Inscreva-se

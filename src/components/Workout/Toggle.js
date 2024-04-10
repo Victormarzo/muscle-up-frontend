@@ -34,12 +34,11 @@ export default function Toggle() {
 
             <Title>Todos os treinos</Title>
             {workouts.length > 0 ? (workouts.map((workout) =>
-                <WorkoutContainer>
+                <WorkoutContainer key={workout.id}>
                     <AllWorkout
                         updateWorkout={updateWorkout}
                         setUpdateWorkout={setUpdateWorkout}
                         name={workout.name}
-                        key={workout.id}
                         active={workout.isActive}
                         id={workout.id}>
                     </AllWorkout>

@@ -1,6 +1,5 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { signUp } from '../services/userApi';
 import Button from './Form/Button';
 import Input from './Form/Input';
 import UserContext from '../contexts/UserContext';
@@ -9,6 +8,7 @@ import Logo from './Logo';
 import Title from './Workout/Title';
 import Toast from './Toast';
 import { toast } from 'react-toastify'; 
+import useSignUp from '../hooks/api/useSignUp';
 
 export default function SignIn() {
     const [email, setEmail] = useState('');
@@ -16,12 +16,12 @@ export default function SignIn() {
     const [name, setName] = useState('');
     const { setUserData } = useContext(UserContext);
     const navigate = useNavigate();
-
+    const { signUp }= useSignUp();
     async function submit(event) {
         event.preventDefault();
 
         try {
-            const userData = await signUp(email, password, name);
+            const userData = await signUp({ email, password, name });
             setUserData(userData);
             toast('Cadastro realizado com sucesso!');
             setTimeout(() => {
@@ -48,7 +48,7 @@ export default function SignIn() {
                 <Text>NOME</Text>
                 <Input label="name" placeholder='name' type="text" value={name} onChange={e => setName(e.target.value)}></Input>
                 <Space />
-                <Button type="submit">Cadastrar</Button>
+                <Button status={true} type="submit">Cadastrar</Button>
             </Form>
             <Toast />
             <Redirect onClick={redirect}>Já possui conta? Faça login aqui</Redirect>

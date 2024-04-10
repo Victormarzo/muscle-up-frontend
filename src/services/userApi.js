@@ -1,12 +1,21 @@
 import api from './api';
 
-export async function signUp(email, password, name) {
-    const response = await api.post('/user', { email, password, name });
-    return response.data;
-};
+export async function signIn(body) {
+    const response = await api.post('/auth', body); 
+    return response.data; 
+}
 
-export async function signIn(email, password) {
-    const response = await api.post('/auth', { email, password });
+export async function signUp(body) {
+    const response = await api.post('/user', body); 
+    return response.data; 
+}
+
+export async function logOut(token) {
+    const response = await api.get('/auth', {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
     return response.data;
-};
-//fazer use pras duas rotas
+}
+

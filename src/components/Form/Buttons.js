@@ -4,7 +4,9 @@ import {
     FaPlusCircle,
     FaArrowCircleLeft,
     FaCog,
-    FaTimesCircle
+    FaTimesCircle,
+    FaDoorOpen
+
 }from 'react-icons/fa';
 
 export function AddButton({ ...props }) {
@@ -43,12 +45,18 @@ export function ConfirmButton({ ...props }) {
     );
 }
 
+export function LogoutButton({ ...props }) {
+    return(
+        <FaDoorOpen  { ...props } color = '#90FBFF' />
+    );
+}
 const buttonSet= {
     ConfirmButton,
     WorkoutButton,
     ConfigButton,
     BackButton,
     AddButton,
-    RemoveButton
+    RemoveButton,
+    LogoutButton
 };
 export default buttonSet;

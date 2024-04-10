@@ -7,16 +7,19 @@ import styled from 'styled-components';
 import useGetLastWorkout from '../hooks/api/useGetLastWorkout';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
-
+import Toast from './Toast';
+import { toast } from 'react-toastify';
+import useLogUserOut from '../hooks/api/useLogUserOut';
+import { ColorRing } from 'react-loader-spinner';
 export default function Home() {
     const [current, setCurrent] = useState();
     const [last, setLast] = useState();
-    const { workoutCheck, workoutCheckError } = useWorkoutCheck();
+    const { workoutCheck, workoutCheckError, workoutCheckLoading } = useWorkoutCheck();
     const { userData } = useContext(UserContext);
-    const { lastWorkout } = useGetLastWorkout();
+    const { lastWorkoutLoading, lastWorkout } = useGetLastWorkout();
     const navigate = useNavigate();
     const userName = userData.name;
-
+    const { logOut } = useLogUserOut();
     useEffect(() => {
         if (workoutCheck) {
             setCurrent(workoutCheck.id);
@@ -33,7 +36,7 @@ export default function Home() {
             setLast(lastWorkout);
         }
     }, [lastWorkout]);
-    
+
     function redirect(option) {
         if (option === 1) {
             navigate(`/workout/${current}`);
@@ -46,32 +49,87 @@ export default function Home() {
     function dataParse(date) {
         return dayjs(date).format('DD/MM/YYYY');
     }
+
+    async function logout() {
+        try {
+            await logOut();
+            console.log('A');
+            toast('Deslogado com sucesso');
+            localStorage.clear();
+            setTimeout(() => {
+                navigate('/sign-in');
+            }, 2000);
+        } catch (error) {
+            toast('Não foi possivel deslogar');
+        }
+    }
+
+    const Spiner =
+        <StyleDiv>
+            <ColorRing
+                visible={true}
+                height="100"
+                width="100"
+                ariaLabel="color-ring-loading"
+                wrapperStyle={{}}
+                wrapperClass="color-ring-wrapper"
+                colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+            />
+        </StyleDiv>;
+
     const currentNotification =
         <CurrentContainer >
             <NotificationP>Você possui um treino em andamento</NotificationP>
             <NotificationS onClick={() => redirect(1)} >Ir para treino</NotificationS>
         </CurrentContainer >;
 
+    let lastWorkoutComponent;
+    function renderLastWorkout() {
+        if (lastWorkoutLoading || lastWorkout && !last) {
+            lastWorkoutComponent = Spiner;
+        } else if (lastWorkout && last) {
+            if (last) {
+                lastWorkoutComponent =
+                    <Last>
+                        <Title>Ultimo treino:</Title>
+                        <LastWorkout>{last.Workout.name}</LastWorkout>
+                        <p>{dataParse(last.updatedAt)}</p>
+                    </Last>;
+            }
+        }
+        else if (lastWorkout === false) {
+            lastWorkoutComponent =
+                <SpaceDiv>
+                    <p>Parece que você ainda não fez nenhum treino</p>
+                    <NotificationS onClick={() => redirect(2)}>Bora treinar?</NotificationS>
+                </SpaceDiv >;
+        }
+    }
+    let currentWorkoutComponent;
+    function renderCurrentWorkout() {
+        if (current) {
+            currentWorkoutComponent = currentNotification;
+        } else {
+            currentWorkoutComponent = <></>;
+        }
+    }
+
+    renderLastWorkout();
+    renderCurrentWorkout();
     return (
 
         <Container>
+            <LogoutDiv><buttonSet.LogoutButton onClick={logout} size='25px'></buttonSet.LogoutButton></LogoutDiv>
             <Title>Olá, {userName}</Title>
-            {last ? (<Last>
-                <Title>Ultimo treino:</Title>
-                <LastWorkout>{last.Workout.name}</LastWorkout>
-                <p>{dataParse(last.updatedAt)}</p>
-            </Last>) :
-                (<SpaceDiv>
-                    <p>Parece que você ainda não fez nenhum treino</p>
-                    <NotificationS onClick={() => redirect(2)}>Bora treinar?</NotificationS>
-                </SpaceDiv>)}
+            {lastWorkoutComponent}
 
             <ButtonContainer>
                 <buttonSet.ConfigButton onClick={() => redirect(3)} size='60px'></buttonSet.ConfigButton>
                 <buttonSet.WorkoutButton onClick={() => redirect(2)} size='60px'></buttonSet.WorkoutButton>
             </ButtonContainer>
-            {current ? (currentNotification) : (<></>)}
-        </Container>
+            {currentWorkoutComponent}
+            <Toast />
+        </Container >
 
     );
 }
@@ -101,7 +159,7 @@ const NotificationP = styled.p`
     font-weight: 400;
     font-size: 22px;
     color:white;
-`;
+    `;
 
 const NotificationS = styled.p`
     font-family: 'Raleway';
@@ -110,35 +168,44 @@ const NotificationS = styled.p`
     font-size: 22px;
     color:white;
     text-decoration: underline;
-`;
-
-const Container = styled.div`
-    margin-top:10%;
+    `;
+const StyleDiv = styled.div`
     display: flex;
-    flex-direction: column;   
-    width: 85vw;     
-`;
+    justify-content: center;
+    align-items: center;
+    `;
+const LogoutDiv = styled.div`
+    height:5vh;
+    display:flex;
+    align-items: center;
+    justify-content: end;
+    `;
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 85vw;
+    `;
 
 const Last = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
+
     p{
-        font-family: 'Raleway';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 32px;
-        color:white; 
-    }
+        font - family: 'Raleway';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 32px;
+    color:white; 
+}
 `;
 
 const LastWorkout = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    
+
     border-radius: 10px;
     background:#476C7C;
     width: 100%;
@@ -147,22 +214,20 @@ const LastWorkout = styled.div`
     font-style: normal;
     font-weight: 400;
     font-size: 32px;
-    color:black; 
+    color:black;
     margin-bottom: 7%;
-`;
+    `;
 
 const SpaceDiv = styled.div`
     height:188px;
-    display:flex;    
+    display:flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     p{
-        font-size: 22px;
-        margin-top:20px;
-        color:white;
-        text-align: center;
-    }
-    
-    
+        font - size: 22px;
+    margin-top:20px;
+    color:white;
+    text-align: center;
+}
 `;
