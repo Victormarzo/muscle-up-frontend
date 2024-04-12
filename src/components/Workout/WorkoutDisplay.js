@@ -8,9 +8,10 @@ import buttonSet from '../Form/Buttons';
 
 export default function WorkoutDisplay() {
     const { workoutId } = useParams();
-    const [workout, setWorkout] = useState([]);
+    const [workout, setWorkout] = useState();
     const { workoutById } = useWorkoutById(workoutId);
     const navigate = useNavigate();
+    let workoutComponent;
     useEffect(() => {
         if (workoutById) {
             setWorkout(workoutById);
@@ -19,24 +20,27 @@ export default function WorkoutDisplay() {
     function back() {
         navigate(-1);
     }
-    return (
-        <>
-            {workout.length !== 0 ? (
+    function renderWorkout() {
+        if (workout) {
+            workoutComponent =
                 <Container>
+                    <Title>{workout.workout[0].Workout.name}</Title>
+                    <SSubTitle>Este treino foi feito {workout.count} vezes</SSubTitle>
                     <EContainer>
-                        <Title>{workout[0].Workout.name}</Title>
-                        {workout.map((exercise, index) =>
+                        {workout.workout.map((exercise, index) =>
                             <ExerciseDisplay key={index}
                                 name={exercise.name}
                                 sets={exercise.sets}
                             ></ExerciseDisplay>
                         )}
-
                     </EContainer>
                     <buttonSet.BackButton size={'60px'} onClick={back}></buttonSet.BackButton>
-                </Container>
-            ) : (<></>)}
-        </>
+                </Container>;
+        }
+    }
+    renderWorkout();
+    return (
+        workoutComponent
     );
 };
 
@@ -48,5 +52,12 @@ const Container = styled.div`
     align-items: center;   
 `;
 const EContainer = styled.div`
-    margin-bottom:10%
+    min-height:65vh;
+`;
+const SSubTitle = styled.h1`
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 22px;
+    color: white;
 `;

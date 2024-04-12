@@ -21,7 +21,7 @@ export default function SignIn() {
         event.preventDefault();
 
         try {
-            const body={ email, password };
+            const body = { email, password };
             const userData = await signIn(body);
             setUserData(userData);
             toast('Login realizado com sucesso!');
@@ -36,7 +36,7 @@ export default function SignIn() {
     function redirect() {
         navigate('/sign-up');
     }
-
+    
     return (
         <>
             <Logo></Logo>

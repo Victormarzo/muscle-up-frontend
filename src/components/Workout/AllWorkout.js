@@ -42,7 +42,6 @@ const ActiveDiv=styled.div`
     width: 85vw;
     border-radius: 10px;
     border: solid 1px white;
-    margin-top:3%;
     padding: 15px;
     background-color:#A1C6CB;
     margin-bottom: 20px;

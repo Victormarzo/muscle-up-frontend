@@ -10,16 +10,25 @@ import dayjs from 'dayjs';
 import Toast from './Toast';
 import { toast } from 'react-toastify';
 import useLogUserOut from '../hooks/api/useLogUserOut';
-import { ColorRing } from 'react-loader-spinner';
+import Spinner from './Form/Spinner';
+
 export default function Home() {
     const [current, setCurrent] = useState();
     const [last, setLast] = useState();
-    const { workoutCheck, workoutCheckError, workoutCheckLoading } = useWorkoutCheck();
+    const { workoutCheck, workoutCheckError } = useWorkoutCheck();
     const { userData } = useContext(UserContext);
     const { lastWorkoutLoading, lastWorkout } = useGetLastWorkout();
     const navigate = useNavigate();
     const userName = userData.name;
     const { logOut } = useLogUserOut();
+    let currentWorkoutComponent;
+    let lastWorkoutComponent;
+    const currentNotification =
+        <CurrentContainer >
+            <NotificationP>Você possui um treino em andamento</NotificationP>
+            <NotificationS onClick={() => redirect(1)} >Ir para treino</NotificationS>
+        </CurrentContainer >;
+
     useEffect(() => {
         if (workoutCheck) {
             setCurrent(workoutCheck.id);
@@ -46,6 +55,7 @@ export default function Home() {
             navigate('/toggle');
         }
     }
+
     function dataParse(date) {
         return dayjs(date).format('DD/MM/YYYY');
     }
@@ -53,7 +63,6 @@ export default function Home() {
     async function logout() {
         try {
             await logOut();
-            console.log('A');
             toast('Deslogado com sucesso');
             localStorage.clear();
             setTimeout(() => {
@@ -64,29 +73,11 @@ export default function Home() {
         }
     }
 
-    const Spiner =
-        <StyleDiv>
-            <ColorRing
-                visible={true}
-                height="100"
-                width="100"
-                ariaLabel="color-ring-loading"
-                wrapperStyle={{}}
-                wrapperClass="color-ring-wrapper"
-                colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
-            />
-        </StyleDiv>;
-
-    const currentNotification =
-        <CurrentContainer >
-            <NotificationP>Você possui um treino em andamento</NotificationP>
-            <NotificationS onClick={() => redirect(1)} >Ir para treino</NotificationS>
-        </CurrentContainer >;
-
-    let lastWorkoutComponent;
     function renderLastWorkout() {
-        if (lastWorkoutLoading || lastWorkout && !last) {
-            lastWorkoutComponent = Spiner;
+        if (lastWorkoutLoading || (lastWorkout && !last)) {
+            lastWorkoutComponent = <StyleDiv>
+                <Spinner />
+            </StyleDiv>;
         } else if (lastWorkout && last) {
             if (last) {
                 lastWorkoutComponent =
@@ -105,7 +96,7 @@ export default function Home() {
                 </SpaceDiv >;
         }
     }
-    let currentWorkoutComponent;
+
     function renderCurrentWorkout() {
         if (current) {
             currentWorkoutComponent = currentNotification;
@@ -117,20 +108,19 @@ export default function Home() {
     renderLastWorkout();
     renderCurrentWorkout();
     return (
-
         <Container>
             <LogoutDiv><buttonSet.LogoutButton onClick={logout} size='25px'></buttonSet.LogoutButton></LogoutDiv>
             <Title>Olá, {userName}</Title>
-            {lastWorkoutComponent}
-
+            <Content>
+                {lastWorkoutComponent}
+                {currentWorkoutComponent}
+            </Content>
             <ButtonContainer>
                 <buttonSet.ConfigButton onClick={() => redirect(3)} size='60px'></buttonSet.ConfigButton>
                 <buttonSet.WorkoutButton onClick={() => redirect(2)} size='60px'></buttonSet.WorkoutButton>
             </ButtonContainer>
-            {currentWorkoutComponent}
             <Toast />
         </Container >
-
     );
 }
 
@@ -144,13 +134,14 @@ const CurrentContainer = styled.div`
     border-radius: 10px;
     padding: 10px;
 `;
-
+const Content = styled.div`
+    min-height:65vh;
+`;
 const ButtonContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 85vw;
-    margin:60% 0 10% 0 ;
 `;
 
 const NotificationP = styled.p`
@@ -159,7 +150,7 @@ const NotificationP = styled.p`
     font-weight: 400;
     font-size: 22px;
     color:white;
-    `;
+`;
 
 const NotificationS = styled.p`
     font-family: 'Raleway';

@@ -11,6 +11,7 @@ import Button from './Form/Button';
 import buttonSet from './Form/Buttons';
 import { toast } from 'react-toastify';
 import Toast from './Toast';
+import Spinner from './Form/Spinner';
 
 export default function Execution() {
     const { exerciseId } = useParams();
@@ -21,7 +22,8 @@ export default function Execution() {
     const navigate = useNavigate();
     const [lastE, setLastE] = useState();
     const [status, setStatus] = useState(false);
-
+    let executionComponent;
+    let titleComponent;
     useEffect(() => {
         if (executionById) {
             setExecutions(executionById);
@@ -54,7 +56,7 @@ export default function Execution() {
     }
     async function handleSubmit(event) {
         event.preventDefault();
-        if(status===false) {
+        if (status === false) {
             return toast('Preencha todos os campos');
         }
         let obj;
@@ -92,7 +94,6 @@ export default function Execution() {
         const reps = executions.sets.split('x', 1);
         renderForm(reps);
     }
-
     if (executions && !inputs) {
         checkExecution();
     }
@@ -109,90 +110,82 @@ export default function Execution() {
         }
         setStatus(statuscheck);
     }
+    function renderExecutionComponent() {
+        if (executions && inputs) {
+            titleComponent = <>
+                <Title>{executions.name}</Title>
+                <SubtitleContainer>
+                    <p>Repetições</p>
+                    {lastE ? (<SpamW><p>{lastE}</p></SpamW>) : (<NolastE />)}
+                    <SpamR><p>Carga</p></SpamR>
+                </SubtitleContainer>
+            </>;
+            if (executions.Execution.length !== 0) {
+                executionComponent = inputs.map((input, index) => {
+                    if (index % 2 !== 0) {
+                        return (
+                            <Grid key={index}>
+                                <ExeContainer>
+                                    <SDivs>
+                                        <p>{input.last}</p>
+                                        <InputP value={inputs[index - 1].value}
+                                            onChange={(ev) => handleInputUpdate(ev, index - 1)}
+                                            type={'number'}
+                                            placeholder={input.last}
+                                        ></InputP>
 
+                                    </SDivs>
+                                    <SDivs>
+                                        <p>{inputs[index - 1].last}</p>
+                                        <InputM value={input.value}
+                                            onChange={(ev) => handleInputUpdate(ev, index)}
+                                            type={'number'}
+                                            placeholder={inputs[index - 1].last}
+                                        ></InputM>
+                                    </SDivs>
+                                </ExeContainer>
+                            </Grid>
+                        );
+                    };
+                });
+            } else {
+                executionComponent = inputs.map((input, index) => {
+                    if (index % 2 !== 0) {
+                        return (
+                            <Grid key={index}>
+                                <NoInputExeContainer >
+                                    <InputP value={inputs[index - 1].value}
+                                        onChange={(ev) => handleInputUpdate(ev, index - 1)}
+                                        type={'number'}
+                                    ></InputP>
+                                    <InputM value={input.value}
+                                        onChange={(ev) => handleInputUpdate(ev, index)}
+                                        type={'number'}
+                                    ></InputM>
+                                </NoInputExeContainer>
+                            </Grid>
+                        );
+                    };
+                });
+            }
+        } else {
+            executionComponent = <Spinner />;
+        }
+    }
+    renderExecutionComponent();
     return (
         <ExeForm onSubmit={handleSubmit}>
-            {executions ? (
-                <>
-                    <Title>{executions.name}</Title>
-                    <SubtitleContainer>
-                        <p>Repetições</p>
-                        {lastE ? (<SpamW><p>{lastE}</p></SpamW>) : (<NolastE />)}
-                        <SpamR><p>Carga</p></SpamR>
-                    </SubtitleContainer>
-                </>
-            ) : (<></>)}
-            {executions && inputs ?
-                (
-                    inputs.length !== 0 ? (executions.Execution.length !== 0 ? (
-                        inputs.map((input, index) => {
-                            if (index % 2 !== 0) {
-                                return (
-                                    <Grid key={index}>
-                                        <ExeContainer>
-                                            <SDivs>
-                                                <p>{input.last}</p>
-                                                <InputP value={inputs[index - 1].value}
-                                                    onChange={(ev) => handleInputUpdate(ev, index - 1)}
-                                                    type={'number'}
-
-                                                    placeholder={input.last}
-                                                ></InputP>
-
-                                            </SDivs>
-                                            <SDivs>
-                                                <p>{inputs[index - 1].last}</p>
-                                                <InputM value={input.value}
-                                                    onChange={(ev) => handleInputUpdate(ev, index)}
-
-                                                    type={'number'}
-
-                                                    placeholder={inputs[index - 1].last}
-                                                ></InputM>
-                                            </SDivs>
-                                        </ExeContainer>
-                                    </Grid>
-                                );
-                            };
-                        })
-                    ) : (
-                        inputs.map((input, index) => {
-                            if (index % 2 !== 0) {
-                                return (
-                                    <Grid key={index}>
-                                        <ExeContainer >
-                                            <InputP value={inputs[index - 1].value}
-                                                onChange={(ev) => handleInputUpdate(ev, index - 1)}
-
-                                                type={'number'}
-
-                                            ></InputP>
-                                            <InputM value={input.value}
-                                                onChange={(ev) => handleInputUpdate(ev, index)}
-
-                                                type={'number'}
-
-                                            ></InputM>
-                                        </ExeContainer>
-                                    </Grid>
-                                );
-                            };
-                        })
-                    )) : (<></>)
-
-                ) : (<></>)}
-            {executions ?
-                (
-                    <>
-                        <Center>
-                            <Button status={status} type='submit'>Finalizar</Button>
-                        </Center>
-                        <ButtonContainer>
-                            <buttonSet.BackButton size={'60px'} onClick={redirect}></buttonSet.BackButton>
-                        </ButtonContainer>
-                        <Toast/>
-                    </>
-                ) : (<></>)}
+            {titleComponent}
+            <Content>
+                {executionComponent}
+                <Center>
+                    <Button status={status} type='submit'>Finalizar</Button>
+                </Center>
+            </Content>
+            <ButtonContainer>
+                <buttonSet.BackButton size={'60px'} onClick={redirect}></buttonSet.BackButton>
+            </ButtonContainer>
+            <Toast />
         </ExeForm>
     );
 };
@@ -206,8 +199,7 @@ const NolastE = styled.div`
     width:119px;
 `;
 const ExeContainer = styled.div`
-    display: flex;
-    align-items: center;
+    display: flex;    align-items: center;
     justify-content: space-between;
     width: 85vw;
     border-radius: 10px;
@@ -231,9 +223,12 @@ const ExeContainer = styled.div`
     }
     
 `;
+const NoInputExeContainer = styled(ExeContainer)`
+    padding-top:3%
+`;
 
 const ExeForm = styled.form`
-    margin-top:10%;
+    margin-top:5vh;
     display: flex;
     flex-direction: column;   
     width: 85vw;  
@@ -243,8 +238,6 @@ const SubtitleContainer = styled.span`
     align-items: center;
     width: 85vw;
     border-radius: 10px;
-    margin-top:10%;
-    margin-bottom:10%;
     padding: 0 10% 0 10%;
     p{
         font-family: 'Raleway';
@@ -256,22 +249,21 @@ const SubtitleContainer = styled.span`
     }
 `;
 const SpamR = styled.span`
-    margin-left:50px
+    margin-left:50px;
 `;
 
 const SpamW = styled.span`
-    margin-left:30px
+    margin-left:30px;
 `;
 const Center = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom:10%;
 `;
 const ButtonContainer = styled.div`
     display: flex;
-    justify-content: space-around;
-    margin-top:10%;
-    padding-bottom:10%;
+    justify-content:center;
 `;
 
 const Grid = styled.div`
@@ -281,4 +273,8 @@ const Grid = styled.div`
         color:black
     }
     margin-bottom:10%;
+`;
+
+const Content = styled.div`
+    min-height:64vh;
 `;

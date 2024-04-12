@@ -12,7 +12,6 @@ const TitleH1 = styled.h1`
     font-size: 32px;
     line-height: 31px;
     color: #FFFFFF;
-    margin: auto;
     text-align:center;
     margin: 2vh 2vh;
     

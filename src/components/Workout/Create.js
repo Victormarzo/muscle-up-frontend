@@ -16,7 +16,7 @@ export default function Create() {
     const [exName, setExName] = useState('');
     const navigate = useNavigate();
     const { newWorkout } = useNewWorkout();
-
+    let createComponent;
     async function handleSubmit(event) {
         event.preventDefault();
         let status = checkStatus();
@@ -31,7 +31,7 @@ export default function Create() {
         };
         try {
             await newWorkout(obj);
-            toast('Treino criado com sucessos');
+            toast('Treino criado com sucesso');
             setTimeout(() => {
                 navigate('/');
             }, 2000);
@@ -78,61 +78,71 @@ export default function Create() {
     function redirect() {
         navigate('/toggle');
     }
+
+    function renderCreateComponent() {
+        if (exInputs.length !== 0) {
+            createComponent =
+                exInputs.map((input, index) =>
+                    <Container key={index}>
+                        <div >
+                            <Input type='text'
+                                name='exercise'
+                                required
+                                placeholder='Exercicio'
+                                value={input.exercise}
+                                onChange={event => handleInputUpdate(event, index)}
+                            ></Input>
+
+                            <NewEx>
+                                <SInput type='number'
+                                    name='sets'
+                                    required
+                                    placeholder='Series'
+                                    value={input.sets}
+                                    onChange={event => handleInputUpdate(event, index)}
+                                ></SInput>
+                                <X>X</X>
+                                <SInput type='number'
+                                    name='reps'
+                                    required
+                                    placeholder='Reps'
+                                    value={input.reps}
+                                    onChange={event => handleInputUpdate(event, index)}
+                                ></SInput>
+                            </NewEx>
+                        </div>
+                        <buttonSet.RemoveButton
+                            size='25px'
+                            type='button'
+                            onClick={() => removeInput(index)}
+                        >remove</buttonSet.RemoveButton>
+                    </Container>
+
+                );
+        }
+    }
+    renderCreateComponent();
+
     return (
         <CContainer>
             <Title>Novo treino</Title>
             <Form>
-                <NInput
-                    type='text'
-                    value={exName}
-                    onChange={e => setExName(e.target.value)}
-                    placeholder='Nome do treino'
-                ></NInput>
-                {exInputs.length !== 0 ?
-                    (exInputs.map((input, index) =>
-                        <Container key={index}>
-                            <div >
-                                <Input type='text'
-                                    name='exercise'
-                                    required
-                                    placeholder='Exercicio'
-                                    value={input.exercise}
-                                    onChange={event => handleInputUpdate(event, index)}
-                                ></Input>
-
-                                <NewEx>
-                                    <SInput type='number'
-                                        name='sets'
-                                        required
-                                        placeholder='Series'
-                                        value={input.sets}
-                                        onChange={event => handleInputUpdate(event, index)}
-                                    ></SInput>
-                                    <X>X</X>
-                                    <SInput type='number'
-                                        name='reps'
-                                        required
-                                        placeholder='Reps'
-                                        value={input.reps}
-                                        onChange={event => handleInputUpdate(event, index)}
-                                    ></SInput>
-                                </NewEx>
-                            </div>
-                            <buttonSet.RemoveButton
-                                size='25px'
-                                type='button'
-                                onClick={() => removeInput(index)}
-                            >remove</buttonSet.RemoveButton>
-                        </Container>
-
-                    )) : (<></>)}
-                <AddButtonContainer>
-                    <buttonSet.AddButton
-                        size='25px'
-                        type='button'
-                        onClick={addInput}>
-                    </buttonSet.AddButton>
-                </AddButtonContainer>
+                <Content>
+                    <NInput
+                        type='text'
+                        value={exName}
+                        onChange={e => setExName(e.target.value)}
+                        placeholder='Nome do treino'
+                    ></NInput>
+                    {createComponent}
+                    <AddButtonContainer>
+                        <buttonSet.AddButton
+                            size='25px'
+                            type='button'
+                            onClick={addInput}>
+                        </buttonSet.AddButton>
+                    </AddButtonContainer>
+                </Content>
                 <ButtonContainer>
                     <buttonSet.BackButton
                         size='60px'
@@ -144,15 +154,17 @@ export default function Create() {
                         type='submit'
                         onClick={handleSubmit}>
                     </buttonSet.ConfirmButton>
-                    
+
                 </ButtonContainer>
                 <Toast />
             </Form>
-        </CContainer>
+        </CContainer >
 
     );
 }
-
+const Content = styled.div`
+    min-height:65vh;
+`;
 const NewEx = styled.div`
     display: flex;
     justify-content: space-between;

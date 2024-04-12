@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import buttonSet from './Form/Buttons';
 import Toast from './Toast';
 import { toast } from 'react-toastify';
+import Spinner from './Form/Spinner';
 
 export default function Workout() {
     const { workoutId } = useParams();
@@ -24,7 +25,7 @@ export default function Workout() {
         if (status === true) {
             try {
                 await finishWorkoutC();
-                toast('Treino finalizado com sucessos');
+                toast('Treino finalizado com sucesso');
                 setTimeout(() => {
                     navigate('/');
                 }, 2000);
@@ -37,40 +38,48 @@ export default function Workout() {
     }
     useEffect(() => {
         if (workoutById) {
-            setWorkout(workoutById);
+            setWorkout(workoutById.workout);
             setStatus(checkWorkout);
         }
     }, [workoutById, checkWorkout]);
-
     function redirect() {
         navigate('/active-workout');
     }
-    return (
-        <>
-            {workout.length !== 0 ? (
+    let workoutComponent;
+    function renderWorkout() {
+        if (workout.length !== 0) {
+            workoutComponent =
                 <Container>
                     <Title>{workout[0].Workout.name}</Title>
-                    {workout.map((exercise) =>
-                        <Exercise
-                            id={exercise.id}
-                            name={exercise.name}
-                            key={exercise.id}
-                            date={exercise.Execution}
-                            sets={exercise.sets}
-                            read={true}
-                        >
-                        </Exercise>
-                    )}
+                    <Content>
+                        {workout.map((exercise) =>
+                            <Exercise
+                                id={exercise.id}
+                                name={exercise.name}
+                                key={exercise.id}
+                                date={exercise.Execution}
+                                sets={exercise.sets}
+                                read={true}
+                            >
+                            </Exercise>
+                        )}
+                        <CenterContainer>
+                            <Button status={status} onClick={finishThisWorkout}>Finalizar treino</Button>
+                        </CenterContainer>
+                    </Content>
                     <Toast />
-                    <CenterContainer>
-                        <Button status={status} onClick={finishThisWorkout}>Finalizar treino</Button>
-                    </CenterContainer>
+
                     <ButtonContainer>
                         <buttonSet.BackButton size={'60px'} onClick={redirect}></buttonSet.BackButton>
                     </ButtonContainer>
-                </Container>
-            ) : (<></>)}
-        </>
+                </Container>;
+        } else {
+            <Spinner></Spinner>;
+        }
+    }
+    renderWorkout();
+    return (
+        workoutComponent
     );
 };
 
@@ -84,13 +93,14 @@ const CenterContainer = styled.div`
 const Container = styled.div`
     display: flex;
     flex-direction: column;
-    margin-top:10%;
+    margin-top:5vh;
     
 `;
 const ButtonContainer = styled.div`
     display: flex;
-    justify-content: space-around;
-    margin-top:10%;
-    
+    justify-content: space-around;   
 `;
-
+const Content = styled.div`
+    min-height:65vh;
+    margin-top:15px;
+`;
