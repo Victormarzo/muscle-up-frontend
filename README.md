@@ -1,70 +1,41 @@
-# Getting Started with Create React App
+# Muscle up - frontend
+Front-end for Muscle up, an individual gym training solution to keep up with your evolution
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## About
+Muscle Up is a web browser application, best suited for mobile query, that helps you tracking and evolving your gym training
 
-## Available Scripts
+1. Clone this repository
+2. Install all dependencies
 
-In the project directory, you can run:
+```bash
+npm i
+```
+3. Populate `.env` file based on `.env.example`. `REACT_APP_API_BASE_URL` should point to your API server (driven.t-back)
+4. Run the back-end in a development environment:
 
-### `npm start`
+```bash
+npm run start
+``` 
+5. Use the seed account or create a new
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Features
+Create your account
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+![signin](https://github.com/Victormarzo/muscle-up-frontend/assets/106850140/062d5228-6168-4884-8d4e-7f1b830177b6)  ![login](https://github.com/Victormarzo/muscle-up-frontend/assets/106850140/7c6c51b0-0790-4ba2-8ab5-8644175cd730)
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Create your workout routines and change them anytime
 
-### `npm run build`
+![newworkout](https://github.com/Victormarzo/muscle-up-frontend/assets/106850140/8620f457-4068-4740-b7b1-9d447696ad8d)  ![toggle](https://github.com/Victormarzo/muscle-up-frontend/assets/106850140/03b0f266-da46-4735-a66c-7b31a4500afc)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Use the routines to keep up with your evolution 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![homew/current](https://github.com/Victormarzo/muscle-up-frontend/assets/106850140/52fbcd26-b3d8-4131-80e1-b2db6fd85d36)  ![active](https://github.com/Victormarzo/muscle-up-frontend/assets/106850140/4551841a-2733-4989-afee-e7b53acecf93)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Check for previous weight executions and routines
 
-### `npm run eject`
+![Screenshot from 2024-04-17 14-05-06](https://github.com/Victormarzo/muscle-up-frontend/assets/106850140/437b6458-7987-4150-ab70-d03f99c3af35)  ![Screenshot from 2024-04-17 11-53-05](https://github.com/Victormarzo/muscle-up-frontend/assets/106850140/99ef3aa1-6ba6-48db-8f54-77ee63e779e1) 
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Keep training!
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+![Screenshot from 2024-04-17 11-49-19](https://github.com/Victormarzo/muscle-up-frontend/assets/106850140/5231becb-06e0-498c-8b1a-da7b1d681cbe)  ![Screenshot from 2024-04-17 12-51-23](https://github.com/Victormarzo/muscle-up-frontend/assets/106850140/a27b7dde-5d1b-496c-ac83-89a966af5206) 
