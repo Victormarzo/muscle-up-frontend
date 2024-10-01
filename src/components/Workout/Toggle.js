@@ -31,7 +31,7 @@ export default function Toggle() {
         }
     }
     function renderAllWorkout() {
-        if (allWorkoutLoading || allWorkout.length !== 0 && workouts.length === 0) {
+        if ((allWorkoutLoading) || (allWorkout.length !== 0 && workouts.length === 0)) {
             AllWorkoutComponent = <Spinner />;
         } else if (allWorkout.length !== 0 && workouts.length !== 0) {
             AllWorkoutComponent =

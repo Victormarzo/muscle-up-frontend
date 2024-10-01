@@ -28,7 +28,7 @@ export default function ActiveWorkout() {
     }
 
     function renderActiveWorkout() {
-        if (activeWorkoutLoading || activeWorkout.length !== 0 && workout.length === 0) {
+        if ((activeWorkoutLoading) || (activeWorkout.length !== 0 && workout.length === 0)) {
             activeComponent = <Spinner />;
         } else if (activeWorkout.length !== 0 && workout.length !== 0) {
             activeComponent =

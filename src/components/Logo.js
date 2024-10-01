@@ -5,7 +5,7 @@ export default function Logo() {
     return (
         <LogoDiv>
             <LogoImg>
-                <img src={MuscleLogo}/>
+                <img alt="logo" src={MuscleLogo}/>
             </LogoImg>
             <LogoText>
                 <Text>MUSCLE UP</Text>
