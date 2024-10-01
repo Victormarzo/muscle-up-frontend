@@ -10,7 +10,7 @@ Muscle Up is a web browser application, best suited for mobile query, that helps
 ```bash
 npm i
 ```
-3. Populate `.env` file based on `.env.example`. `REACT_APP_API_BASE_URL` should point to your API server (driven.t-back)
+3. Populate `.env` file based on `.env.example`. `REACT_APP_API_BASE_URL` should point to your API server (muscle-up-backend)
 4. Run the back-end in a development environment:
 
 ```bash
